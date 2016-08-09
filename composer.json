@@ -1,0 +1,19 @@
+{
+  "name": "febalist/laravel-support",
+  "autoload": {
+    "psr-4": {
+      "Febalist\\LaravelSupport\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "require": {
+    "guzzlehttp/guzzle": "6.*",
+    "predis/predis": "1.*"
+  },
+  "require-dev": {
+    "barryvdh/laravel-ide-helper": "2.*",
+    "doctrine/dbal": "2.*"
+  }
+}
