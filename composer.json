@@ -11,8 +11,5 @@
   "require": {
     "guzzlehttp/guzzle": "6.*",
     "predis/predis": "1.*"
-  },
-  "require-dev": {
-    "doctrine/dbal": "2.*"
   }
 }
