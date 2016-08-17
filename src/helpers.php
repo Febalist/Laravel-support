@@ -104,8 +104,8 @@ if (!function_exists('url_decode')) {
     }
 }
 
-if (!function_exists('url_host')) {
-    function url_host($url)
+if (!function_exists('url_domain')) {
+    function url_domain($url)
     {
         if (str_contains($url, '/')) {
             $url = parse_url($url);
