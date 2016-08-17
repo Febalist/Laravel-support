@@ -52,23 +52,27 @@ if (!function_exists('chance')) {
     }
 }
 
-function fixNewLines($string, $symbol = "\n")
-{
-    return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
+if (!function_exists('fixNewLines')) {
+    function fixNewLines($string, $symbol = "\n")
+    {
+        return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
+    }
 }
 
-function list_cleanup($array, $transform = null, $arguments = null)
-{
-    $array = (array)$array;
-    if ($transform) {
-        $arguments = func_get_args();
-        $arguments = array_slice($arguments, 1);
-        foreach ($array as &$element) {
-            $arguments[0] = $element;
-            $element      = call_user_func_array($transform, $arguments);
+if (!function_exists('list_cleanup')) {
+    function list_cleanup($array, $transform = null, $arguments = null)
+    {
+        $array = (array)$array;
+        if ($transform) {
+            $arguments = func_get_args();
+            $arguments = array_slice($arguments, 1);
+            foreach ($array as &$element) {
+                $arguments[0] = $element;
+                $element      = call_user_func_array($transform, $arguments);
+            }
         }
+        $array = array_filter($array);
+        $array = array_unique($array);
+        return $array;
     }
-    $array = array_filter($array);
-    $array = array_unique($array);
-    return $array;
 }
