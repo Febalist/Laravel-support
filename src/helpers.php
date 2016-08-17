@@ -57,9 +57,14 @@ function fixNewLines($string, $symbol = "\n")
     return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
 }
 
-function list_cleanup($array)
+function list_cleanup($array, $trim = false)
 {
     $array = (array)$array;
+    if ($trim) {
+        foreach ($array as &$element) {
+            $element = trim($element);
+        }
+    }
     $array = array_filter($array);
     $array = array_unique($array);
     return $array;
