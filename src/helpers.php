@@ -57,12 +57,15 @@ function fixNewLines($string, $symbol = "\n")
     return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
 }
 
-function list_cleanup($array, $transform = null)
+function list_cleanup($array, $transform = null, $arguments = null)
 {
     $array = (array)$array;
     if ($transform) {
+        $arguments = func_get_args();
+        $arguments = array_slice($arguments, 1);
         foreach ($array as &$element) {
-            $element = call_user_func($transform, $element);
+            $arguments[0] = $element;
+            $element      = call_user_func_array($transform, $arguments);
         }
     }
     $array = array_filter($array);
