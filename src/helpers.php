@@ -104,6 +104,35 @@ if (!function_exists('url_decode')) {
     }
 }
 
+if (!function_exists('url_parse')) {
+    function url_parse($url, $withoutFragment = false, $withoutQuery = false)
+    {
+        if (!str_contains($url, '//')) {
+            $url = '//'.$url;
+        }
+        $parts = parse_url($url);
+        $host  = array_get($parts, 'host');
+        if (!$host) {
+            return null;
+        }
+        if (extension_loaded('intl')) {
+            $host = idn_to_utf8($host);
+        }
+        $scheme = array_get($parts, 'scheme', 'http').'://';
+        $path   = array_get($parts, 'path', '/');
+        $query  = $withoutQuery ? null : array_get($parts, 'query');
+        if ($query) {
+            parse_str($query, $query);
+            $query = '?'.http_build_query($query);
+        }
+        $fragment = $withoutFragment ? null : array_get($parts, 'fragment');
+        if ($fragment) {
+            $fragment = '#'.$fragment;
+        }
+        return implode('', [$scheme, $host, $path, $query, $fragment]);
+    }
+}
+
 if (!function_exists('url_domain')) {
     function url_domain($url)
     {
