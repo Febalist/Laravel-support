@@ -103,3 +103,14 @@ if (!function_exists('url_decode')) {
         return $url;
     }
 }
+
+if (!function_exists('url_host')) {
+    function url_host($url)
+    {
+        if (str_contains($url, '/')) {
+            $url = parse_url($url);
+            return $url['host'];
+        }
+        return $url;
+    }
+}
