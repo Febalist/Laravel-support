@@ -83,3 +83,23 @@ if (!function_exists('array_map_args')) {
         return $array;
     }
 }
+
+if (!function_exists('url_encode')) {
+    function url_encode($url)
+    {
+        $url = url_decode($url);
+        return urlencode($url);
+    }
+}
+
+if (!function_exists('url_decode')) {
+    function url_decode($url)
+    {
+        $before = null;
+        while ($before != $url) {
+            $before = $url;
+            $url    = urldecode($url);
+        }
+        return $url;
+    }
+}
