@@ -10,10 +10,10 @@ if (!function_exists('user')) {
 
 if (!function_exists('json_parse')) {
     /** @return array */
-    function json_parse($data = null, $default = null)
+    function json_parse($data = null, $default = null, $asObject = false)
     {
         try {
-            $data = json_decode($data, true);
+            $data = json_decode($data, !$asObject);
         } catch (Exception $e) {
             $data = $default;
         }
@@ -50,4 +50,17 @@ if (!function_exists('chance')) {
     {
         return mt_rand(1, $max) <= $percent;
     }
+}
+
+function fixNewLines($string, $symbol = "\n")
+{
+    return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
+}
+
+function list_cleanup($array)
+{
+    $array = (array)$array;
+    $array = array_filter($array);
+    $array = array_unique($array);
+    return $array;
 }
