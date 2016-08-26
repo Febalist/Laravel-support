@@ -143,3 +143,28 @@ if (!function_exists('url_domain')) {
         return $url;
     }
 }
+
+if (!function_exists('faker')) {
+    /**
+     * @param             $field
+     * @param mixed       $params
+     * @param bool        $unique
+     *
+     * @return string
+     */
+    function faker($field, $params = [], $unique = false)
+    {
+        static $faker = null;
+        if (is_null($faker)) {
+            $locale = config('services.faker.locale', \Faker\Factory::DEFAULT_LOCALE);
+            $faker  = Faker\Factory::create($locale);
+        }
+        if (!is_array($params)) {
+            $params = [$params];
+        }
+        if ($unique) {
+            $faker = $faker->unique();
+        }
+        return call_user_func_array([$faker, $field], $params);
+    }
+}
