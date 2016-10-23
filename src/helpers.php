@@ -168,3 +168,13 @@ if (!function_exists('faker')) {
         return call_user_func_array([$faker, $field], $params);
     }
 }
+
+if (!function_exists('dj')) {
+    function dj($data)
+    {
+        header('Content-Type: application/json');
+        echo json_stringify($data, true);
+
+        die(1);
+    }
+}
