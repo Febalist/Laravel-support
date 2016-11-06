@@ -182,11 +182,17 @@ if (!function_exists('dj')) {
 if (!function_exists('foreign')) {
 	function foreign(Illuminate\Database\Schema\Blueprint $blueprint, $name, $nullable = false, $onDelete = 'cascade')
 	{
-	    $name_parts = explode('_', $name);
-	    $field      = array_splice($name_parts, -1, 1)[0];
-	    $table      = implode('_', $name_parts);
-	    $table      = str_plural($table);
-	    $fluent     = $blueprint->unsignedInteger($name)->index();
+	    if (is_array($name)) {
+	        $table = $name[1];
+	        $field = isset($name[2]) ? $name[2] : 'id';
+	        $name  = $name[0];
+	    } else {
+	        $name_parts = explode('_', $name);
+	        $field      = array_splice($name_parts, -1, 1)[0];
+	        $table      = implode('_', $name_parts);
+	        $table      = str_plural($table);
+	    }
+	    $fluent = $blueprint->unsignedInteger($name)->index();
 	    if ($nullable) {
 	        $fluent->nullable();
 	    }
