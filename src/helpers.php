@@ -32,7 +32,7 @@ if (!function_exists('json_stringify')) {
     }
 }
 
-if (!function_exists('json_stringify')) {
+if (!function_exists('keystoupper')) {
     /** @return array */
     function keystoupper(array $array)
     {
@@ -180,22 +180,22 @@ if (!function_exists('dj')) {
 }
 
 if (!function_exists('foreign')) {
-	function foreign(Illuminate\Database\Schema\Blueprint $blueprint, $name, $nullable = false, $onDelete = 'cascade')
-	{
-	    if (is_array($name)) {
-	        $table = $name[1];
-	        $field = isset($name[2]) ? $name[2] : 'id';
-	        $name  = $name[0];
-	    } else {
-	        $name_parts = explode('_', $name);
-	        $field      = array_splice($name_parts, -1, 1)[0];
-	        $table      = implode('_', $name_parts);
-	        $table      = str_plural($table);
-	    }
-	    $fluent = $blueprint->unsignedInteger($name)->index();
-	    if ($nullable) {
-	        $fluent->nullable();
-	    }
-	    $blueprint->foreign($name)->references($field)->on($table)->onDelete($onDelete);
-	}
+    function foreign(Illuminate\Database\Schema\Blueprint $blueprint, $name, $nullable = false, $onDelete = 'cascade')
+    {
+        if (is_array($name)) {
+            $table = $name[1];
+            $field = isset($name[2]) ? $name[2] : 'id';
+            $name  = $name[0];
+        } else {
+            $name_parts = explode('_', $name);
+            $field      = array_splice($name_parts, -1, 1)[0];
+            $table      = implode('_', $name_parts);
+            $table      = str_plural($table);
+        }
+        $fluent = $blueprint->unsignedInteger($name)->index();
+        if ($nullable) {
+            $fluent->nullable();
+        }
+        $blueprint->foreign($name)->references($field)->on($table)->onDelete($onDelete);
+    }
 }
