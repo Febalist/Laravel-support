@@ -199,3 +199,24 @@ if (!function_exists('foreign')) {
         $blueprint->foreign($name)->references($field)->on($table)->onDelete($onDelete);
     }
 }
+
+if (!function_exists('css')) {
+    function css($name)
+    {
+        return mix("css/$name.css");
+    }
+}
+
+if (!function_exists('js')) {
+    function js($name)
+    {
+        return mix("js/$name.js");
+    }
+}
+
+if (!function_exists('img')) {
+    function img($file)
+    {
+        return asset("img/$file");
+    }
+}
