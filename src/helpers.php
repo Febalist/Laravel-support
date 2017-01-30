@@ -220,3 +220,14 @@ if (!function_exists('img')) {
         return asset("img/$file");
     }
 }
+
+if (!function_exists('array_avg')) {
+    function array_avg(array $array)
+    {
+        $count = count($array);
+        if ($count == 0) {
+            return 0;
+        }
+        return array_sum($array) / $count;
+    }
+}
