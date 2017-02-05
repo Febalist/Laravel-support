@@ -17,6 +17,7 @@ if (!function_exists('json_parse')) {
         } catch (Exception $e) {
             $data = $default;
         }
+
         return $data;
     }
 }
@@ -28,6 +29,7 @@ if (!function_exists('json_stringify')) {
         if ($pretty) {
             $options = $options | JSON_PRETTY_PRINT;
         }
+
         return json_encode($data, $options);
     }
 }
@@ -38,9 +40,10 @@ if (!function_exists('keystoupper')) {
     {
         $result = [];
         foreach ($array as $key => $value) {
-            $key          = strtoupper($key);
+            $key = strtoupper($key);
             $result[$key] = $value;
         }
+
         return $result;
     }
 }
@@ -62,12 +65,13 @@ if (!function_exists('fixNewLines')) {
 if (!function_exists('list_cleanup')) {
     function list_cleanup($array, $callback = null, $arguments = [])
     {
-        $array = (array)$array;
+        $array = (array) $array;
         if ($callback) {
             $array = array_map_args($array, $callback, $arguments);
         }
         $array = array_filter($array);
         $array = array_unique($array);
+
         return $array;
     }
 }
@@ -78,8 +82,9 @@ if (!function_exists('array_map_args')) {
         array_unshift($arguments, null);
         foreach ($array as &$element) {
             $arguments[0] = $element;
-            $element      = call_user_func_array($callback, $arguments);
+            $element = call_user_func_array($callback, $arguments);
         }
+
         return $array;
     }
 }
@@ -88,6 +93,7 @@ if (!function_exists('url_encode')) {
     function url_encode($url)
     {
         $url = url_decode($url);
+
         return urlencode($url);
     }
 }
@@ -98,8 +104,9 @@ if (!function_exists('url_decode')) {
         $before = null;
         while ($before != $url) {
             $before = $url;
-            $url    = urldecode($url);
+            $url = urldecode($url);
         }
+
         return $url;
     }
 }
@@ -111,16 +118,16 @@ if (!function_exists('url_parse')) {
             $url = '//'.$url;
         }
         $parts = parse_url($url);
-        $host  = array_get($parts, 'host');
+        $host = array_get($parts, 'host');
         if (!$host) {
-            return null;
+            return;
         }
         if (extension_loaded('intl')) {
             $host = idn_to_utf8($host);
         }
         $scheme = array_get($parts, 'scheme', 'http').'://';
-        $path   = array_get($parts, 'path', '/');
-        $query  = $withoutQuery ? null : array_get($parts, 'query');
+        $path = array_get($parts, 'path', '/');
+        $query = $withoutQuery ? null : array_get($parts, 'query');
         if ($query) {
             parse_str($query, $query);
             $query = '?'.http_build_query($query);
@@ -129,6 +136,7 @@ if (!function_exists('url_parse')) {
         if ($fragment) {
             $fragment = '#'.$fragment;
         }
+
         return implode('', [$scheme, $host, $path, $query, $fragment]);
     }
 }
@@ -138,17 +146,19 @@ if (!function_exists('url_domain')) {
     {
         if (str_contains($url, '/')) {
             $url = parse_url($url);
+
             return $url['host'];
         }
+
         return $url;
     }
 }
 
 if (!function_exists('faker')) {
     /**
-     * @param             $field
-     * @param mixed       $params
-     * @param bool        $unique
+     * @param       $field
+     * @param mixed $params
+     * @param bool  $unique
      *
      * @return string
      */
@@ -157,7 +167,7 @@ if (!function_exists('faker')) {
         static $faker = null;
         if (is_null($faker)) {
             $locale = config('services.faker.locale', \Faker\Factory::DEFAULT_LOCALE);
-            $faker  = Faker\Factory::create($locale);
+            $faker = Faker\Factory::create($locale);
         }
         if (!is_array($params)) {
             $params = [$params];
@@ -165,6 +175,7 @@ if (!function_exists('faker')) {
         if ($unique) {
             $faker = $faker->unique();
         }
+
         return call_user_func_array([$faker, $field], $params);
     }
 }
@@ -185,12 +196,12 @@ if (!function_exists('foreign')) {
         if (is_array($name)) {
             $table = $name[1];
             $field = isset($name[2]) ? $name[2] : 'id';
-            $name  = $name[0];
+            $name = $name[0];
         } else {
             $name_parts = explode('_', $name);
-            $field      = array_splice($name_parts, -1, 1)[0];
-            $table      = implode('_', $name_parts);
-            $table      = str_plural($table);
+            $field = array_splice($name_parts, -1, 1)[0];
+            $table = implode('_', $name_parts);
+            $table = str_plural($table);
         }
         $fluent = $blueprint->unsignedInteger($name)->index();
         if ($nullable) {
@@ -228,6 +239,7 @@ if (!function_exists('array_avg')) {
         if ($count == 0) {
             return 0;
         }
+
         return array_sum($array) / $count;
     }
 }
