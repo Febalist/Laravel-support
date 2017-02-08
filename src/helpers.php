@@ -250,3 +250,22 @@ if (!function_exists('microsleep')) {
         usleep($micro_seconds * 1000000);
     }
 }
+
+if (!function_exists('rate_limit')) {
+    function rate_limit($action, $limit = 1)
+    {
+        $cache_key = "rate_limit.$action";
+        $interval = 1 / $limit;
+
+        $last = (float) cache($cache_key, 0);
+        $now = microtime(true);
+
+        $wait = max(0, $interval - ($now - $last));
+
+        cache([
+            $cache_key => $now + $wait,
+        ], ceil($interval + $wait / 60));
+
+        microsleep($wait);
+    }
+}
