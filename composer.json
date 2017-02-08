@@ -9,8 +9,6 @@
         ]
     },
     "require": {
-        "laravel/framework": "5.4.*",
-        "guzzlehttp/guzzle": "6.*",
-        "predis/predis": "1.*"
+        "laravel/framework": "5.4.*"
     }
 }
