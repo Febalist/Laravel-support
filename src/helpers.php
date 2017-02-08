@@ -243,3 +243,10 @@ if (!function_exists('array_avg')) {
         return array_sum($array) / $count;
     }
 }
+
+if (!function_exists('microsleep')) {
+    function microsleep($micro_seconds)
+    {
+        usleep($micro_seconds * 1000000);
+    }
+}
