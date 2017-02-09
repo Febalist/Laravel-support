@@ -9,6 +9,6 @@
         ]
     },
     "require": {
-        "laravel/framework": "5.4.*"
+        "illuminate/support": "5.4.*"
     }
 }
