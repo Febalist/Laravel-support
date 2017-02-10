@@ -261,6 +261,16 @@ if (!function_exists('array_avg')) {
     }
 }
 
+if (!function_exists('isAssoc')) {
+    function isAssoc($array)
+    {
+        if ([] === $array) {
+            return false;
+        }
+        return array_keys($array) !== range(0, count($array) - 1);
+    }
+}
+
 if (!function_exists('microsleep')) {
     function microsleep($micro_seconds)
     {
