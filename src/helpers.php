@@ -261,8 +261,8 @@ if (!function_exists('array_avg')) {
     }
 }
 
-if (!function_exists('isAssoc')) {
-    function isAssoc($array)
+if (!function_exists('is_assoc')) {
+    function is_assoc($array)
     {
         if ([] === $array) {
             return false;
