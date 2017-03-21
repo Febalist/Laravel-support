@@ -261,6 +261,19 @@ if (!function_exists('array_avg')) {
     }
 }
 
+if (!function_exists('array_flip_multiple')) {
+    function array_flip_multiple(array $array)
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $result[$value][] = $key;
+        }
+
+        return $result;
+    }
+}
+
 if (!function_exists('is_assoc')) {
     function is_assoc($array)
     {
