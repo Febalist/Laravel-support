@@ -72,7 +72,7 @@ if (!function_exists('list_cleanup')) {
         $array = array_filter($array);
         $array = array_unique($array);
 
-        return $array;
+        return array_values($array);
     }
 }
 
