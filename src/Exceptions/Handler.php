@@ -36,6 +36,10 @@ class Handler extends ExceptionHandler
             return new Response($whoops->handleException($e), 500);
         }
 
+        if (view()->exists('errors.500')) {
+            return response()->view('errors.500', ['exception' => $e], 500);
+        }
+
         return parent::convertExceptionToResponse($e);
     }
 
