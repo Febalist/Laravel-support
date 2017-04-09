@@ -5,6 +5,7 @@ namespace Febalist\LaravelSupport\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -23,6 +24,11 @@ class Handler extends ExceptionHandler
         parent::renderForConsole($output, $e);
     }
 
+    protected function renderHttpException(HttpException $e)
+    {
+        return $this->convertExceptionToResponse($e);
+    }
+
     protected function convertExceptionToResponse(Exception $e)
     {
         if (!$this->isHttpException($e) && $this->whoops()) {
@@ -36,8 +42,20 @@ class Handler extends ExceptionHandler
             return new Response($whoops->handleException($e), 500);
         }
 
-        if (view()->exists('errors.500')) {
-            return response()->view('errors.500', ['exception' => $e], 500);
+        $status = 500;
+        $headers = [];
+        $data = ['exception' => $e];
+        if ($this->isHttpException($e)) {
+            $status = $e->getStatusCode();
+            $headers = $e->getHeaders();
+        }
+
+        if (view()->exists("errors.$status")) {
+            return response()->view("errors.$status", $data, $status);
+        }
+
+        if (view()->exists("support::errors.$status")) {
+            return response()->view("support::errors.$status", $data, $status, $headers);
         }
 
         return parent::convertExceptionToResponse($e);
