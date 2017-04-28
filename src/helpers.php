@@ -233,14 +233,32 @@ if (!function_exists('foreign')) {
 if (!function_exists('css')) {
     function css($name)
     {
-        return mix("css/$name.css");
+        return asset_mix("css/$name.css");
     }
 }
 
 if (!function_exists('js')) {
     function js($name)
     {
-        return mix("js/$name.js");
+        return asset_mix("js/$name.js");
+    }
+}
+
+if (!function_exists('asset_manifest')) {
+    function asset_mix($file)
+    {
+        try {
+            return mix($file);
+        } catch (Exception $exception) {
+            $messages = [
+                'The Mix manifest does not exist',
+                'Unable to locate Mix file',
+            ];
+            if (starts_with($exception->getMessage(), $messages)) {
+                return asset($file);
+            }
+            throw $exception;
+        }
     }
 }
 
