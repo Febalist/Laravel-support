@@ -336,26 +336,15 @@ if (!function_exists('rate_limit')) {
 }
 
 if (!function_exists('transfer')) {
-    function transfer()
+    function transfer($key, $value = null)
     {
-        static $data = [];
+        $data = View::shared('transfer');
 
-        $arguments = func_get_args();
-
-        if (func_num_args() == 2) {
-            array_set($data, $arguments[0], $arguments[1]);
+        $keys = is_array($key) ? $key : [$key => $value];
+        foreach ($keys as $key => $value) {
+            array_set($data, $key, $value);
         }
 
-        if (func_num_args() == 1) {
-            if (is_array($arguments[0])) {
-                foreach ($arguments[0] as $key => $value) {
-                    transfer($key, $value);
-                }
-            } else {
-                return array_get($data, $arguments[0]);
-            }
-        }
-
-        return $data;
+        View::share('transfer', $data);
     }
 }
