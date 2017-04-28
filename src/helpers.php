@@ -3,6 +3,7 @@
 if (!function_exists('user')) {
     /**
      * @return App\User
+     *
      * @deprecated
      */
     function user()
