@@ -2,10 +2,7 @@
 
 namespace Febalist\LaravelSupport;
 
-use Auth;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\View;
-use View as ViewFactory;
 
 class SupportServiceProvider extends ServiceProvider
 {
@@ -21,13 +18,6 @@ class SupportServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/views' => resource_path('views/vendor/support'),
         ]);
-
-        ViewFactory::composer('support::layouts.master', function (View $view) {
-            transfer($view, [
-                'csrfToken' => csrf_token(),
-                'auth'      => Auth::check(),
-            ]);
-        });
     }
 
     /**

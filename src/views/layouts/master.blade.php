@@ -25,7 +25,8 @@
 @yield('body')
 
 <script>
-  window.Laravel = {!! json_encode($transfer) !!};
+  @php transfer('csrfToken', csrf_token()) @endphp
+  window.Laravel = {!! json_encode(transfer()) !!};
 </script>
 <script src="{{ js('app') }}"></script>
 @stack('scripts')

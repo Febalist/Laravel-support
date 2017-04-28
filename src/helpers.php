@@ -338,25 +338,24 @@ if (!function_exists('rate_limit')) {
 if (!function_exists('transfer')) {
     function transfer()
     {
+        static $data = [];
+
         $arguments = func_get_args();
-        $transfer = View::shared('transfer') ?: [];
-        $view = null;
 
-        if ($arguments[0] instanceof Illuminate\View\View) {
-            $view = array_shift($arguments);
-        }
-        $key = array_shift($arguments);
-        $value = array_shift($arguments);
-
-        $keys = is_array($key) ? $key : [$key => $value];
-        foreach ($keys as $key => $value) {
-            array_set($transfer, $key, $value);
+        if (func_num_args() == 2) {
+            array_set($data, $arguments[0], $arguments[1]);
         }
 
-        View::share('transfer', $transfer);
-
-        if ($view) {
-            $view->with('transfer', $transfer);
+        if (func_num_args() == 1) {
+            if (is_array($arguments[0])) {
+                foreach ($arguments[0] as $key => $value) {
+                    transfer($key, $value);
+                }
+            } else {
+                return array_get($data, $arguments[0]);
+            }
         }
+
+        return $data;
     }
 }
