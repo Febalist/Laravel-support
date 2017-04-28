@@ -330,3 +330,32 @@ if (!function_exists('rate_limit')) {
         microsleep($wait);
     }
 }
+
+function transfer()
+{
+    static $data;
+
+    if (!$data) {
+        $data = [
+            'csrfToken' => csrf_token(),
+        ];
+    }
+
+    $arguments = func_get_args();
+
+    if (func_num_args() == 2) {
+        array_set($data, $arguments[0], $arguments[1]);
+    }
+
+    if (func_num_args() == 1) {
+        if (is_array($arguments[0])) {
+            foreach ($arguments[0] as $key => $value) {
+                transfer($key, $value);
+            }
+        } else {
+            return array_get($data, $arguments[0]);
+        }
+    }
+
+    return $data;
+}
