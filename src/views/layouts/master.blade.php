@@ -19,7 +19,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  @stack('head')
+  @includeIf('layouts.head')
 </head>
 <body>
 @yield('body')
