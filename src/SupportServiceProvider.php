@@ -23,12 +23,10 @@ class SupportServiceProvider extends ServiceProvider
         ]);
 
         ViewFactory::composer('support::layouts.master', function (View $view) {
-            $transfer = array_merge_recursive([
+            transfer($view, [
                 'csrfToken' => csrf_token(),
                 'auth'      => Auth::check(),
-            ], array_get($view->getData(), 'transfer', []));
-
-            $view->with('transfer', $transfer);
+            ]);
         });
     }
 

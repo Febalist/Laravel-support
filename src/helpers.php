@@ -336,9 +336,17 @@ if (!function_exists('rate_limit')) {
 }
 
 if (!function_exists('transfer')) {
-    function transfer($key, $value = null)
+    function transfer()
     {
+        $arguments = func_get_args();
         $transfer = View::shared('transfer') ?: [];
+        $view = null;
+
+        if ($arguments[0] instanceof Illuminate\View\View) {
+            $view = array_shift($arguments);
+        }
+        $key = array_shift($arguments);
+        $value = array_shift($arguments);
 
         $keys = is_array($key) ? $key : [$key => $value];
         foreach ($keys as $key => $value) {
@@ -346,5 +354,9 @@ if (!function_exists('transfer')) {
         }
 
         View::share('transfer', $transfer);
+
+        if ($view) {
+            $view->with('transfer', $transfer);
+        }
     }
 }
