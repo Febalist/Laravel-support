@@ -2,6 +2,7 @@
 
 namespace Febalist\LaravelSupport;
 
+use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 use View as ViewFactory;
@@ -22,7 +23,12 @@ class SupportServiceProvider extends ServiceProvider
         ]);
 
         ViewFactory::composer('support::layouts.master', function (View $view) {
-            transfer('csrfToken', csrf_token());
+            $transfer = array_merge_recursive([
+                'csrfToken' => csrf_token(),
+                'auth'      => Auth::check(),
+            ], array_get($view->getData(), 'transfer', []));
+
+            $view->with('transfer', $transfer);
         });
     }
 

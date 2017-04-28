@@ -338,13 +338,13 @@ if (!function_exists('rate_limit')) {
 if (!function_exists('transfer')) {
     function transfer($key, $value = null)
     {
-        $data = View::shared('transfer');
+        $transfer = View::shared('transfer') ?: [];
 
         $keys = is_array($key) ? $key : [$key => $value];
         foreach ($keys as $key => $value) {
-            array_set($data, $key, $value);
+            array_set($transfer, $key, $value);
         }
 
-        View::share('transfer', $data);
+        View::share('transfer', $transfer);
     }
 }
