@@ -334,13 +334,7 @@ if (!function_exists('rate_limit')) {
 if (!function_exists('transfer')) {
     function transfer()
     {
-        static $data;
-
-        if (!$data) {
-            $data = [
-                'csrfToken' => csrf_token(),
-            ];
-        }
+        static $data = [];
 
         $arguments = func_get_args();
 
