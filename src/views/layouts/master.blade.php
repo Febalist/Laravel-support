@@ -6,18 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   @stack('meta')
 
-  <link rel="stylesheet" href="{{ css('app') }}">
-  @stack('styles')
-
   <title>
     @hasSection('title') @yield('title') &middot; @endif
     {{ config('app.name') }}
   </title>
 
+  <link rel="stylesheet" href="{{ css('app') }}">
+  @stack('styles')
+
   <!--[if lt IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+  @stack('head')
 </head>
 <body>
 @yield('body')
