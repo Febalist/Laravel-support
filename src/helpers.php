@@ -1,7 +1,10 @@
 <?php
 
 if (!function_exists('user')) {
-    /** @return App\User */
+    /**
+     * @return App\User
+     * @deprecated
+     */
     function user()
     {
         return \Auth::user();
@@ -210,6 +213,7 @@ if (!function_exists('dj')) {
 }
 
 if (!function_exists('foreign')) {
+    /** @deprecated */
     function foreign(Illuminate\Database\Schema\Blueprint $blueprint, $name, $nullable = false, $onDelete = 'cascade')
     {
         if (is_array($name)) {
