@@ -5,7 +5,6 @@ namespace Febalist\LaravelSupport;
 use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
-use View as ViewFactory;
 
 class SupportServiceProvider extends ServiceProvider
 {
@@ -22,7 +21,7 @@ class SupportServiceProvider extends ServiceProvider
             __DIR__.'/views' => resource_path('views/vendor/support'),
         ]);
 
-        ViewFactory::composer('support::layouts.master', function (View $view) {
+        view()->composer('support::layouts.master', function (View $view) {
             $transfer = array_merge([
                 'csrfToken' => csrf_token(),
                 'auth'      => Auth::check(),
