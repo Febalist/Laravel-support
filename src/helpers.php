@@ -3,7 +3,6 @@
 if (!function_exists('user')) {
     /**
      * @return App\User
-     *
      * @deprecated
      */
     function user()
@@ -253,17 +252,25 @@ if (!function_exists('asset_manifest')) {
     function asset_mix($file)
     {
         try {
-            return mix($file);
+            $url = url(mix($file));
         } catch (Exception $exception) {
             $messages = [
                 'The Mix manifest does not exist',
                 'Unable to locate Mix file',
             ];
             if (starts_with($exception->getMessage(), $messages)) {
-                return asset($file);
+                $url = asset($file);
             }
             throw $exception;
         }
+
+        if (false && config('app.debug')) {
+            $url .= '?'.time();
+        } elseif ($release = config('sentry.release')) {
+            $url .= '?'.$release;
+        }
+
+        return $url;
     }
 }
 
