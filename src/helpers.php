@@ -264,7 +264,7 @@ if (!function_exists('asset_manifest')) {
             throw $exception;
         }
 
-        if (false && config('app.debug')) {
+        if (config('app.debug')) {
             $url .= '?'.time();
         } elseif ($release = config('sentry.release')) {
             $url .= '?'.$release;
