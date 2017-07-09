@@ -252,19 +252,17 @@ if (!function_exists('asset_manifest')) {
     function asset_mix($file)
     {
         try {
-            $url = url(mix($file));
+            return url(mix($file));
         } catch (Exception $exception) {
             $messages = [
                 'The Mix manifest does not exist',
                 'Unable to locate Mix file',
             ];
             if (starts_with($exception->getMessage(), $messages)) {
-                $url = asset($file);
+                return asset($file);
             }
             throw $exception;
         }
-
-        return $url;
     }
 }
 
