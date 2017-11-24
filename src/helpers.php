@@ -3,6 +3,7 @@
 if (!function_exists('user')) {
     /**
      * @return App\User
+     *
      * @deprecated
      */
     function user()
@@ -261,6 +262,7 @@ if (!function_exists('asset_manifest')) {
             if (starts_with($exception->getMessage(), $messages)) {
                 return asset($file);
             }
+
             throw $exception;
         }
     }
