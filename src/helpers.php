@@ -6,9 +6,9 @@ if (!function_exists('user')) {
      *
      * @deprecated
      */
-    function user()
+    function user($guard = null)
     {
-        return \Auth::user();
+        return auth($guard)->user();
     }
 }
 
@@ -17,12 +17,10 @@ if (!function_exists('json_parse')) {
     function json_parse($data = null, $default = null, $asObject = false)
     {
         try {
-            $data = json_decode($data, !$asObject);
+            return json_decode($data, !$asObject);
         } catch (Exception $e) {
-            $data = $default;
+            return $default;
         }
-
-        return $data;
     }
 }
 if (!function_exists('json_stringify')) {
@@ -53,14 +51,14 @@ if (!function_exists('keystoupper')) {
 }
 
 if (!function_exists('chance')) {
-    function chance($percent = 50, $max = 100)
+    function chance($percent = 50, $max = 100, $min = 1)
     {
-        return mt_rand(1, $max) <= $percent;
+        return mt_rand($min, $max) <= $percent;
     }
 }
 
-if (!function_exists('fixNewLines')) {
-    function fixNewLines($string, $symbol = "\n")
+if (!function_exists('replace_newlines')) {
+    function replace_newlines($string, $symbol = "\n")
     {
         return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
     }
@@ -118,7 +116,7 @@ if (!function_exists('url_decode')) {
 }
 
 if (!function_exists('url_parse')) {
-    function url_parse($url, $withoutFragment = false, $withoutQuery = false)
+    function url_normalize($url, $withoutFragment = false, $withoutQuery = false)
     {
         if (!str_contains($url, '//')) {
             $url = '//'.$url;
@@ -153,15 +151,15 @@ if (!function_exists('url_domain')) {
         if (str_contains($url, '/')) {
             $url = parse_url($url);
 
-            return $url['host'];
+            return $url['host'] ?? '';
         }
 
         return $url;
     }
 }
 
-if (!function_exists('unparse_url')) {
-    function unparse_url($parsed_url)
+if (!function_exists('build_url')) {
+    function build_url($parsed_url)
     {
         $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'].'://' : '';
         $host = isset($parsed_url['host']) ? $parsed_url['host'] : '';
@@ -177,29 +175,15 @@ if (!function_exists('unparse_url')) {
     }
 }
 
-if (!function_exists('faker')) {
-    /**
-     * @param       $field
-     * @param mixed $params
-     * @param bool  $unique
-     *
-     * @return string
-     */
-    function faker($field, $params = [], $unique = false)
+if (!function_exists('query')) {
+    function query($params, $url = null)
     {
-        static $faker = null;
-        if (is_null($faker)) {
-            $locale = config('services.faker.locale', \Faker\Factory::DEFAULT_LOCALE);
-            $faker = Faker\Factory::create($locale);
-        }
-        if (!is_array($params)) {
-            $params = [$params];
-        }
-        if ($unique) {
-            $faker = $faker->unique();
-        }
-
-        return call_user_func_array([$faker, $field], $params);
+        $url = $url ?: request()->fullUrl();
+        $url = parse_url($url);
+        parse_str($url['query'] ?? '', $query);
+        $params = array_merge($query, $params);
+        $url['query'] = http_build_query($params);
+        return build_url($url);
     }
 }
 
@@ -210,28 +194,6 @@ if (!function_exists('dj')) {
         echo json_stringify($data, true);
 
         die(1);
-    }
-}
-
-if (!function_exists('foreign')) {
-    /** @deprecated */
-    function foreign(Illuminate\Database\Schema\Blueprint $blueprint, $name, $nullable = false, $onDelete = 'cascade')
-    {
-        if (is_array($name)) {
-            $table = $name[1];
-            $field = isset($name[2]) ? $name[2] : 'id';
-            $name = $name[0];
-        } else {
-            $name_parts = explode('_', $name);
-            $field = array_splice($name_parts, -1, 1)[0];
-            $table = implode('_', $name_parts);
-            $table = str_plural($table);
-        }
-        $fluent = $blueprint->unsignedInteger($name)->index();
-        if ($nullable) {
-            $fluent->nullable();
-        }
-        $blueprint->foreign($name)->references($field)->on($table)->onDelete($onDelete);
     }
 }
 
@@ -278,12 +240,17 @@ if (!function_exists('img')) {
 if (!function_exists('array_avg')) {
     function array_avg(array $array)
     {
+        $sum = array_sum($array);
         $count = count($array);
-        if ($count == 0) {
-            return 0;
-        }
+        return div($sum, $count);
+    }
+}
 
-        return array_sum($array) / $count;
+if (!function_exists('div')) {
+    function div($divisible, $divisor, $number = false)
+    {
+        $null = $number ? 0 : null;
+        return $divisor ? $divisible / $divisor : $null;
     }
 }
 
@@ -318,46 +285,61 @@ if (!function_exists('microsleep')) {
     }
 }
 
-if (!function_exists('rate_limit')) {
-    function rate_limit($action, $limit = 1)
+if (!function_exists('filename_normalize')) {
+    function filename_normalize($name, $spaces = ' ')
     {
-        $cache_key = "rate_limit.$action";
-        $interval = 1 / $limit;
-
-        $last = (float) cache($cache_key, 0);
-        $now = microtime(true);
-
-        $wait = max(0, $interval - ($now - $last));
-
-        cache([
-            $cache_key => $now + $wait,
-        ], ceil($interval + $wait / 60));
-
-        microsleep($wait);
+        $name = mb_ereg_replace("\s+", $spaces, $name);
+        $name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $name);
+        $name = mb_ereg_replace("([\.]{2,})", '', $name);
+        return $name;
     }
 }
 
-if (!function_exists('transfer')) {
-    function transfer()
+if (!function_exists('float')) {
+    function float($number)
     {
-        static $data = [];
+        $number = str_replace(',', '.', $number);
+        //$number = preg_replace('/\s+/', '', $number);
+        return (float) $number;
+    }
+}
 
-        $arguments = func_get_args();
-
-        if (func_num_args() == 2) {
-            array_set($data, $arguments[0], $arguments[1]);
+if (!function_exists('email_normalize')) {
+    function email_normalize($address)
+    {
+        if (!str_contains($address, '@') || mb_strlen($address) < 7) {
+            return null;
         }
+        $address = trim($address);
+        $address = mb_strtolower($address);
+        return $address;
+    }
+}
 
-        if (func_num_args() == 1) {
-            if (is_array($arguments[0])) {
-                foreach ($arguments[0] as $key => $value) {
-                    transfer($key, $value);
-                }
-            } else {
-                return array_get($data, $arguments[0]);
-            }
+if (!function_exists('email_normalize')) {
+    function paginate($items, $perPage = 15, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+}
+
+if (!function_exists('carbon')) {
+    /** @return \Carbon\Carbon */
+    function carbon($date = null)
+    {
+        if (is_numeric($date)) {
+            return \Date::createFromTimestamp($date);
         }
+        return \Date::parse($date);
+    }
+}
 
-        return $data;
+if (!function_exists('number')) {
+    function number($number, $decimals = 0, $units = null, $separator = ' ')
+    {
+        $number = number_format($number, $decimals, ',', $separator);
+        return $units ? "$number$separator$units" : $number;
     }
 }

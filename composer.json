@@ -1,14 +1,25 @@
 {
-    "name": "febalist/laravel-support",
-    "autoload": {
-        "psr-4": {
-            "Febalist\\LaravelSupport\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+  "name": "febalist/laravel-support",
+  "autoload": {
+    "psr-4": {
+      "Febalist\\LaravelSupport\\": "src/"
     },
-    "require": {
-        "illuminate/support": "5.5.*"
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "require": {
+    "illuminate/support": "5.5.*",
+    "jenssegers/date": "^3.2",
+    "sebastiaanluca/laravel-helpers": "^1.0"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Febalist\\LaravelSupport\\ServiceProvider",
+        "SebastiaanLuca\\Helpers\\Methods\\GlobalHelpersServiceProvider",
+        "SebastiaanLuca\\Helpers\\Collections\\CollectionMacrosServiceProvider"
+      ]
     }
+  }
 }
