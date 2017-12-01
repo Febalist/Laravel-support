@@ -183,6 +183,7 @@ if (!function_exists('query')) {
         parse_str($url['query'] ?? '', $query);
         $params = array_merge($query, $params);
         $url['query'] = http_build_query($params);
+
         return build_url($url);
     }
 }
@@ -242,6 +243,7 @@ if (!function_exists('array_avg')) {
     {
         $sum = array_sum($array);
         $count = count($array);
+
         return div($sum, $count);
     }
 }
@@ -250,6 +252,7 @@ if (!function_exists('div')) {
     function div($divisible, $divisor, $number = false)
     {
         $null = $number ? 0 : null;
+
         return $divisor ? $divisible / $divisor : $null;
     }
 }
@@ -291,6 +294,7 @@ if (!function_exists('filename_normalize')) {
         $name = mb_ereg_replace("\s+", $spaces, $name);
         $name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $name);
         $name = mb_ereg_replace("([\.]{2,})", '', $name);
+
         return $name;
     }
 }
@@ -308,10 +312,11 @@ if (!function_exists('email_normalize')) {
     function email_normalize($address)
     {
         if (!str_contains($address, '@') || mb_strlen($address) < 7) {
-            return null;
+            return;
         }
         $address = trim($address);
         $address = mb_strtolower($address);
+
         return $address;
     }
 }
@@ -321,6 +326,7 @@ if (!function_exists('email_normalize')) {
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
+
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
@@ -332,6 +338,7 @@ if (!function_exists('carbon')) {
         if (is_numeric($date)) {
             return \Date::createFromTimestamp($date);
         }
+
         return \Date::parse($date);
     }
 }
@@ -340,6 +347,7 @@ if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = ' ')
     {
         $number = number_format($number, $decimals, ',', $separator);
+
         return $units ? "$number$separator$units" : $number;
     }
 }
