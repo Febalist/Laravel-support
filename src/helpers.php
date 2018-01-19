@@ -364,7 +364,7 @@ if (!function_exists('number')) {
             }
             $number .= $separator.$units;
         }
-        
+
         return $number;
     }
 }
