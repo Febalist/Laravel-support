@@ -347,7 +347,24 @@ if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = ' ')
     {
         $number = number_format($number, $decimals, ',', $separator);
-
-        return $units ? "$number$separator$units" : $number;
+        if ($units) {
+            if (str_contains($units, '|')) {
+                $units = explode('|', $units);
+                if (($number - $number % 10) % 100 != 10) {
+                    if ($number % 10 == 1) {
+                        $units = $units[0].$units[2];
+                    } elseif ($number % 10 >= 2 && $number % 10 <= 4) {
+                        $units = $units[0].$units[3];
+                    } else {
+                        $units = $units[0].$units[1];
+                    }
+                } else {
+                    $units = $units[0].$units[1];
+                }
+            }
+            $number .= $separator.$units;
+        }
+        
+        return $number;
     }
 }
