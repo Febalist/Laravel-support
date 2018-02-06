@@ -3,8 +3,6 @@
 if (!function_exists('user')) {
     /**
      * @return App\User
-     *
-     * @deprecated
      */
     function user($guard = null)
     {
@@ -23,6 +21,7 @@ if (!function_exists('json_parse')) {
         }
     }
 }
+
 if (!function_exists('json_stringify')) {
     /** @return string */
     function json_stringify($data, $pretty = false)
