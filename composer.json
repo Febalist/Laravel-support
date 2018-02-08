@@ -9,7 +9,7 @@
     ]
   },
   "require": {
-    "illuminate/support": "5.5.*",
+    "illuminate/support": "^5.5",
     "jenssegers/date": "^3.2",
     "sebastiaanluca/laravel-helpers": "^1.0"
   },
