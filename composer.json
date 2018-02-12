@@ -9,8 +9,10 @@
     ]
   },
   "require": {
+    "erusev/parsedown": "^1.0",
     "illuminate/support": "^5.5",
     "jenssegers/date": "^3.2",
+    "moontoast/math": "*",
     "sebastiaanluca/laravel-helpers": "^1.0"
   },
   "extra": {

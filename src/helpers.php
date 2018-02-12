@@ -56,10 +56,29 @@ if (!function_exists('chance')) {
     }
 }
 
+if (!function_exists('upload_limit')) {
+    function upload_limit()
+    {
+        return min([
+            (int) ini_get('upload_max_filesize'),
+            (int) ini_get('post_max_size'),
+            (int) ini_get('memory_limit'),
+        ]);
+    }
+}
+
 if (!function_exists('replace_newlines')) {
     function replace_newlines($string, $symbol = "\n")
     {
         return str_replace(["\r\n", "\r", "\n"], $symbol, $string);
+    }
+}
+
+if (!function_exists('str_uuid')) {
+    function str_uuid($ordered = false)
+    {
+        $uuid = $ordered ? Illuminate\Support\Str::orderedUuid() : Illuminate\Support\Str::uuid();
+        return (string) $uuid;
     }
 }
 
@@ -307,6 +326,29 @@ if (!function_exists('float')) {
     }
 }
 
+if (!function_exists('checkbox')) {
+    function checkbox($value, $default = false)
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+        if (in_array($value, ['true', 'on', 'yes', '1', 1], true)) {
+            return true;
+        }
+        if (in_array($value, ['false', 'off', 'no', '0', 0], true)) {
+            return false;
+        }
+        return $default;
+    }
+}
+
+if (!function_exists('digits')) {
+    function digits($string)
+    {
+        return preg_replace('/[^\d]/', '', $string);
+    }
+}
+
 if (!function_exists('email_normalize')) {
     function email_normalize($address)
     {
@@ -342,6 +384,16 @@ if (!function_exists('carbon')) {
     }
 }
 
+if (!function_exists('cache_remember')) {
+    function cache_remember($key, $minutes, $callback, array $arguments = [], $driver = null)
+    {
+        $hash = array_hash($arguments);
+        return Cache::driver($driver)->remember("$key.$hash", $minutes, function () use ($callback, $arguments) {
+            return call_user_func_array($callback, $arguments);
+        });
+    }
+}
+
 if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = ' ')
     {
@@ -365,5 +417,49 @@ if (!function_exists('number')) {
         }
 
         return $number;
+    }
+}
+
+if (!function_exists('filesize_format')) {
+    function filesize_format($size, $locale = null)
+    {
+        $units = [
+            'en' => ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            'ru' => ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ИБ'],
+        ];
+        $units = $units[$locale ?: locale()] ?: $units['en'];
+        $power = $size > 0 ? floor(log($size, 1024)) : 0;
+        $number = $size / pow(1024, $power);
+        return number($number, 1, $units[$power]);
+    }
+}
+
+if (!function_exists('name_initials')) {
+    function name_initials($fullname)
+    {
+        $parts = explode(' ', $fullname);
+        $result = [];
+        $result[] = array_shift($parts);
+        foreach ($parts as $part) {
+            $result[] = mb_substr($part, 0, 1).'.';
+        }
+        return implode(' ', $result);
+    }
+}
+
+if (!function_exists('markdown')) {
+    function markdown(
+        $content,
+        $text_mode = false,
+        $disable_breaks = false,
+        $ignore_links = false,
+        $escape_html = false
+    ) {
+        $markdown = Parsedown::instance()
+            ->setBreaksEnabled(!$disable_breaks)
+            ->setUrlsLinked(!$ignore_links)
+            ->setMarkupEscaped($escape_html);
+        $markdown = $text_mode ? $markdown->text($content) : $markdown->line($content);
+        return new Illuminate\Support\HtmlString($markdown);
     }
 }
