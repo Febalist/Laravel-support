@@ -469,3 +469,11 @@ if (!function_exists('markdown')) {
         return new Illuminate\Support\HtmlString($markdown);
     }
 }
+
+if (!function_exists('mb_ucfirst')) {
+    function mb_ucfirst($str)
+    {
+        $fc = mb_strtoupper(mb_substr($str, 0, 1));
+        return $fc.mb_substr($str, 1);
+    }
+}
