@@ -1,5 +1,0 @@
-preset: recommended
-
-finder:
-  exclude:
-    - "_ide_helper.php"
