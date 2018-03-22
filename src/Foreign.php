@@ -40,7 +40,7 @@ class Foreign
 
         $table = $reference[0];
         if (class_exists($table)) {
-            $model = new $table;
+            $model = new $table();
             if ($model instanceof Model) {
                 $table = $model->getTable();
                 $key = $model->getKeyName();
