@@ -2,6 +2,7 @@
 
 namespace Febalist\LaravelSupport;
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
@@ -23,5 +24,12 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register()
     {
+        Blueprint::macro('model', function (...$arguments) {
+            Foreign::create($this, ...$arguments);
+        });
+
+        Blueprint::macro('dropModel', function (...$arguments) {
+            Foreign::drop($this, ...$arguments);
+        });
     }
 }
