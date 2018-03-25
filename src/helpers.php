@@ -57,13 +57,14 @@ if (!function_exists('chance')) {
 }
 
 if (!function_exists('upload_limit')) {
-    function upload_limit()
+    function upload_limit($mb = false)
     {
-        return min([
-            (int) ini_get('upload_max_filesize'),
-            (int) ini_get('post_max_size'),
-            (int) ini_get('memory_limit'),
+        $size = min([
+            filesize_parse(ini_get('upload_max_filesize')),
+            filesize_parse(ini_get('post_max_size')),
+            filesize_parse(ini_get('memory_limit')),
         ]);
+        return $mb ? floor($size / 1024 / 1024) : $size;
     }
 }
 
@@ -423,18 +424,49 @@ if (!function_exists('number')) {
     }
 }
 
-if (!function_exists('filesize_format')) {
-    function filesize_format($size, $locale = null)
+if (!function_exists('filesize_units')) {
+    function filesize_units($locale = null)
     {
-        $units = [
+        return array_get([
             'en' => ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             'ru' => ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ИБ'],
-        ];
-        $units = $units[$locale ?: locale()] ?: $units['en'];
+        ], $locale, []);
+    }
+}
+
+if (!function_exists('filesize_format')) {
+    function filesize_format($size, $locale = 'en')
+    {
+        $units = filesize_units($locale);
         $power = $size > 0 ? floor(log($size, 1024)) : 0;
         $number = $size / pow(1024, $power);
 
         return number($number, 1, $units[$power]);
+    }
+}
+
+if (!function_exists('filesize_parse')) {
+    function filesize_parse($string, $locale = 'en')
+    {
+        $units = filesize_units($locale);
+        $byte = $units[0];
+
+        preg_match('/^([\d,\.]+)\s*(.*)$/u', $string, $matches);
+
+        $number = float($matches[1]);
+        $unit = strtoupper($matches[2] ?: $byte);
+
+        if (!ends_with($unit, $byte)) {
+            $unit = "$unit$byte";
+        }
+
+        foreach ($units as $pow => $name) {
+            if ($unit == $name) {
+                return $number * pow(1024, $pow);
+            }
+        }
+
+        return null;
     }
 }
 
