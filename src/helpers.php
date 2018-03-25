@@ -64,6 +64,7 @@ if (!function_exists('upload_limit')) {
             filesize_parse(ini_get('post_max_size')),
             filesize_parse(ini_get('memory_limit')),
         ]);
+
         return $mb ? floor($size / 1024 / 1024) : $size;
     }
 }
@@ -465,8 +466,6 @@ if (!function_exists('filesize_parse')) {
                 return $number * pow(1024, $pow);
             }
         }
-
-        return null;
     }
 }
 
