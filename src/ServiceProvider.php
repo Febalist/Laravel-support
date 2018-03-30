@@ -24,12 +24,6 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public function register()
     {
-        Blueprint::macro('model', function (...$arguments) {
-            return Foreign::create($this, ...$arguments);
-        });
-
-        Blueprint::macro('dropModel', function (...$arguments) {
-            return Foreign::drop($this, ...$arguments);
-        });
+        Macro::register();
     }
 }

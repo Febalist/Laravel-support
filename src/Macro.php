@@ -4,12 +4,29 @@ namespace Febalist\LaravelSupport;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
+use ReflectionClass;
+use ReflectionMethod;
 
-class Foreign
+class Macro
 {
-    public static function create(Blueprint $blueprint, $reference, $nullable = false, $cascade = null)
+    public static function register()
     {
-        $reference = static::parseReference($reference);
+        $macro = new static();
+
+        $class = new ReflectionClass($macro);
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        foreach ($methods as $method) {
+            $name = $method->getName();
+            Blueprint::macro($method->name, function (...$arguments) use ($macro, $name) {
+                return $macro->$name($this, ...$arguments);
+            });
+        }
+    }
+
+    public function model(Blueprint $blueprint, $reference, $nullable = false, $cascade = null)
+    {
+        $reference = $this->parseReference($reference);
 
         $cascade = $cascade === null ? !$nullable : $cascade;
         $onDelete = $cascade ? 'CASCADE' : ($nullable ? 'SET NULL' : 'NO ACTION');
@@ -24,15 +41,35 @@ class Foreign
         return $fluent;
     }
 
-    public static function drop(Blueprint $blueprint, $reference)
+    public function dropModel(Blueprint $blueprint, $reference)
     {
-        $reference = static::parseReference($reference);
+        $reference = $this->parseReference($reference);
 
         $blueprint->dropForeign($reference['foreign']);
         $blueprint->dropColumn($reference['column']);
     }
 
-    protected static function parseReference($reference)
+    public function name(Blueprint $blueprint, $column = 'name', $length = null)
+    {
+        return $blueprint->string($column, $length);
+    }
+
+    public function description(Blueprint $blueprint, $column = 'description')
+    {
+        return $blueprint->text($column);
+    }
+
+    public function total(Blueprint $blueprint, $column = 'total', $total = 9, $places = 2)
+    {
+        return $blueprint->float($column, $total, $places);
+    }
+
+    public function amount(Blueprint $blueprint, $column = 'amount')
+    {
+        return $blueprint->unsignedInteger($column);
+    }
+
+    protected function parseReference($reference)
     {
         if (!is_array($reference)) {
             $reference = [$reference];
