@@ -9,64 +9,78 @@ use ReflectionMethod;
 
 class Macro
 {
+    protected $blueprint;
+
+    public function __construct(Blueprint $blueprint)
+    {
+        $this->blueprint = $blueprint;
+    }
+
     public static function register()
     {
-        $macro = new static();
-
-        $class = new ReflectionClass($macro);
-        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+        $methods = static::methods();
 
         foreach ($methods as $method) {
-            $name = $method->getName();
-            Blueprint::macro($method->name, function (...$arguments) use ($macro, $name) {
-                return $macro->$name($this, ...$arguments);
+            Blueprint::macro($method, function (...$arguments) use ($method) {
+                $macro = new static($this);
+                return $macro->$method(...$arguments);
             });
         }
     }
 
-    public function model(Blueprint $blueprint, $reference, $nullable = false, $cascade = null)
+    protected static function methods()
+    {
+        $class = new ReflectionClass(static::class);
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        return collect($methods)->filter(function (ReflectionMethod $method) {
+            return !$method->isStatic() && !starts_with($method->name, '_');
+        })->pluck('name');
+    }
+
+    public function model($reference, $nullable = false, $cascade = null)
     {
         $reference = $this->parseReference($reference);
 
         $cascade = $cascade === null ? !$nullable : $cascade;
         $onDelete = $cascade ? 'CASCADE' : ($nullable ? 'SET NULL' : 'NO ACTION');
 
-        $fluent = $blueprint->unsignedInteger($reference['column'])->index();
+        $fluent = $this->blueprint->unsignedInteger($reference['column'])->index();
         if ($nullable) {
             $fluent->nullable();
         }
-        $blueprint->foreign($reference['foreign'])->references($reference['key'])->on($reference['table'])
+        $this->blueprint->foreign($reference['foreign'])->references($reference['key'])->on($reference['table'])
             ->onUpdate('CASCADE')->onDelete($onDelete);
 
         return $fluent;
     }
 
-    public function dropModel(Blueprint $blueprint, $reference)
+    public function dropModel($reference)
     {
         $reference = $this->parseReference($reference);
 
-        $blueprint->dropForeign($reference['foreign']);
-        $blueprint->dropColumn($reference['column']);
+        $this->blueprint->dropForeign($reference['foreign']);
+        $this->blueprint->dropColumn($reference['column']);
     }
 
-    public function name(Blueprint $blueprint, $column = 'name', $length = null)
+    public function name($column = 'name', $length = null)
     {
-        return $blueprint->string($column, $length);
+        return $this->blueprint->string($column, $length);
     }
 
-    public function description(Blueprint $blueprint, $column = 'description')
+    public function description($column = 'description')
     {
-        return $blueprint->text($column);
+        return $this->blueprint->text($column);
     }
 
-    public function total(Blueprint $blueprint, $column = 'total', $total = 9, $places = 2)
+    public function total($column = 'total', $total = 9, $places = 2)
     {
-        return $blueprint->float($column, $total, $places);
+        return $this->blueprint->float($column, $total, $places);
     }
 
-    public function amount(Blueprint $blueprint, $column = 'amount')
+    public function amount($column = 'amount')
     {
-        return $blueprint->unsignedInteger($column);
+        return $this->blueprint->unsignedInteger($column);
     }
 
     protected function parseReference($reference)
