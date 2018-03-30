@@ -455,7 +455,7 @@ if (!function_exists('filesize_parse')) {
         preg_match('/^([\d,\.]+)\s*(.*)$/u', $string, $matches);
 
         if (!$matches) {
-            return null;
+            return;
         }
 
         $number = float($matches[1]);

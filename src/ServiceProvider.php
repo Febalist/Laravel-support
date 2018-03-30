@@ -2,7 +2,6 @@
 
 namespace Febalist\LaravelSupport;
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
