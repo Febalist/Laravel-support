@@ -73,7 +73,7 @@ class Macro
         return $this->blueprint->text($column);
     }
 
-    public function total($column = 'total', $total = 11, $places = 2)
+    public function total($column = 'total', $total = 9, $places = 2)
     {
         return $this->blueprint->float($column, $total, $places);
     }
