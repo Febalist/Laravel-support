@@ -68,6 +68,11 @@ class Macro
         return $this->blueprint->string($column, $length)->unique();
     }
 
+    public function password($column = 'password', $length = 60)
+    {
+        return $this->blueprint->string($column, $length);
+    }
+
     public function name($column = 'name', $length = null)
     {
         return $this->blueprint->string($column, $length);
