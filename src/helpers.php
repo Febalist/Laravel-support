@@ -324,6 +324,7 @@ if (!function_exists('float')) {
     function float($number)
     {
         $number = str_replace(',', '.', $number);
+
         //$number = preg_replace('/\s+/', '', $number);
         return (float) $number;
     }
@@ -527,5 +528,20 @@ if (!function_exists('str_limit_hard')) {
         }
 
         return str_limit($value, $limit, $end);
+    }
+}
+
+if (!function_exists('language')) {
+    function language($locale = null)
+    {
+        $locales = [
+            'en' => 'en_US',
+            'ru' => 'ru_RU',
+        ];
+
+        $locale = $locale ?: config('app.locale');
+        $default = config('app.fallback_locale');
+
+        return array_get($locales, $locale) ?: array_get($locales, $default);
     }
 }
