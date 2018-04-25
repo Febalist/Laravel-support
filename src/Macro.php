@@ -63,6 +63,11 @@ class Macro
         $this->blueprint->dropColumn($reference['column']);
     }
 
+    public function login($column = 'login', $length = 30)
+    {
+        return $this->blueprint->string($column, $length);
+    }
+
     public function name($column = 'name', $length = null)
     {
         return $this->blueprint->string($column, $length);
