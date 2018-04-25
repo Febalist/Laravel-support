@@ -65,7 +65,7 @@ class Macro
 
     public function login($column = 'login', $length = 30)
     {
-        return $this->blueprint->string($column, $length);
+        return $this->blueprint->string($column, $length)->unique();
     }
 
     public function name($column = 'name', $length = null)
