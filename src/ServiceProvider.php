@@ -22,7 +22,7 @@ class ServiceProvider extends IlluminateServiceProvider
         });
 
         Validator::extend('float', function ($attribute, $value, $parameters, $validator) {
-            $value = preg_replace('\s', '', $value);
+            $value = preg_replace('/\s/', '', $value);
 
             return preg_match('/^[-+]?\d+[.,]?\d*$/', $value);
         });
