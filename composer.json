@@ -2,11 +2,8 @@
   "name": "febalist/laravel-support",
   "autoload": {
     "psr-4": {
-      "Febalist\\LaravelSupport\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+      "Febalist\\Laravel\\Support\\": "src/"
+    }
   },
   "require": {
     "illuminate/support": "5.*",

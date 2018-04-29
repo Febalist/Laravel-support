@@ -1,12 +1,12 @@
 <?php
 
-namespace Febalist\LaravelSupport;
+namespace Febalist\Laravel\Support;
 
 use Blade;
-use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Validator;
 
-class ServiceProvider extends IlluminateServiceProvider
+class SupportServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application events.
@@ -42,5 +42,7 @@ class ServiceProvider extends IlluminateServiceProvider
                 return \Faker\Factory::create(language());
             });
         }
+
+        require_once __DIR__.'/helpers.php';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Febalist\LaravelSupport;
+namespace Febalist\Laravel\Support;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
