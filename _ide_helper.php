@@ -2,7 +2,7 @@
 
 namespace Illuminate\Database\Schema {
 
-    use Febalist\LaravelSupport\Macro;
+    use Febalist\Laravel\Support\Macro;
 
     /** @mixin Macro */
     class Blueprint
