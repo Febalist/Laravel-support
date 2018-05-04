@@ -14,7 +14,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Febalist\\LaravelSupport\\ServiceProvider",
+        "Febalist\\Laravel\\Support\\ServiceProvider",
         "SebastiaanLuca\\Helpers\\Methods\\GlobalHelpersServiceProvider",
         "SebastiaanLuca\\Helpers\\Collections\\CollectionMacrosServiceProvider"
       ]
