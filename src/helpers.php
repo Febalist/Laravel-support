@@ -564,8 +564,11 @@ if (!function_exists('whitespaces')) {
 }
 
 if (!function_exists('multiexplode')) {
-    function multiexplode(array $delimiters, $string)
+    function multiexplode($delimiters, $string)
     {
+        if (is_string($delimiters)) {
+            $delimiters = str_split($delimiters);
+        }
         $ready = str_replace($delimiters, $delimiters[0], $string);
         $launch = explode($delimiters[0], $ready);
 
