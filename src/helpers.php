@@ -545,3 +545,20 @@ if (!function_exists('language')) {
         return array_get($locales, $locale) ?: array_get($locales, $default);
     }
 }
+
+if (!function_exists('whitespaces')) {
+    function whitespaces($string, $newlines = false, $multilines = false)
+    {
+        if ($newlines) {
+            $string = replace_newlines($string);
+            $string = preg_replace('/[^\S\n]+/', ' ', $string);
+            if (!$multilines) {
+                $string = preg_replace('/\n+/', "\n", $string);
+            }
+        } else {
+            $string = preg_replace('/\s+/', ' ', $string);
+        }
+
+        return $string;
+    }
+}
