@@ -26,6 +26,9 @@ class SupportServiceProvider extends ServiceProvider
 
             return preg_match('/^[-+]?\d+[.,]?\d*$/', $value);
         });
+
+        $this->loadViewsFrom(__DIR__.'/../views', 'support');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'support');
     }
 
     /**
@@ -42,6 +45,10 @@ class SupportServiceProvider extends ServiceProvider
                 return \Faker\Factory::create(language());
             });
         }
+
+        $this->publishes([
+            __DIR__.'/../views/publishes' => base_path('resources/views'),
+        ]);
 
         require_once __DIR__.'/helpers.php';
     }
