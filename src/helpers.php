@@ -233,7 +233,7 @@ if (!function_exists('js')) {
     }
 }
 
-if (!function_exists('asset_manifest')) {
+if (!function_exists('asset_mix')) {
     function asset_mix($file)
     {
         try {
