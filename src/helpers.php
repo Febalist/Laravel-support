@@ -401,9 +401,12 @@ if (!function_exists('cache_remember')) {
 }
 
 if (!function_exists('number')) {
-    function number($number, $decimals = 0, $units = null, $separator = ' ')
+    function number($number, $decimals = 0, $units = null, $separator = ' ', $plus = false)
     {
-        $number = number_format($number, $decimals, ',', $separator);
+        $negative = $number < 0;
+
+        $number = number_format(abs($number), $decimals, ',', $separator);
+
         if ($units) {
             if (str_contains($units, '|')) {
                 $units = explode('|', $units);
@@ -420,6 +423,12 @@ if (!function_exists('number')) {
                 }
             }
             $number .= $separator.$units;
+        }
+
+        if ($negative) {
+            $number = '−'.$separator.$number;
+        } elseif ($plus) {
+            $number = '+'.$separator.$number;
         }
 
         return $number;
