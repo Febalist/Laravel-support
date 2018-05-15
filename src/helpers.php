@@ -584,3 +584,27 @@ if (!function_exists('multiexplode')) {
         return $launch;
     }
 }
+
+if (!function_exists('uchr')) {
+    function uchr($codes)
+    {
+        if (is_scalar($codes)) {
+            $codes = func_get_args();
+        }
+        $str = '';
+        foreach ($codes as $code) {
+            $str .= html_entity_decode('&#'.$code.';', ENT_NOQUOTES, 'UTF-8');
+        }
+        return $str;
+    }
+}
+
+if (!function_exists('uord')) {
+    function uord($u)
+    {
+        $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
+        $k1 = ord(substr($k, 0, 1));
+        $k2 = ord(substr($k, 1, 1));
+        return $k2 * 256 + $k1;
+    }
+}
