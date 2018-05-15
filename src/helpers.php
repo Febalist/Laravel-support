@@ -76,6 +76,16 @@ if (!function_exists('replace_newlines')) {
     }
 }
 
+if (!function_exists('str_between')) {
+    function str_between($subject, $after, $before)
+    {
+        $subject = str_after($subject, $after);
+        $subject = str_before($subject, $before);
+
+        return $subject;
+    }
+}
+
 if (!function_exists('str_uuid')) {
     function str_uuid($ordered = false)
     {
