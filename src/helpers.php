@@ -401,10 +401,11 @@ if (!function_exists('cache_remember')) {
 }
 
 if (!function_exists('number')) {
-    function number($number, $decimals = 0, $units = null, $separator = ' ', $plus = false)
+    function number($number, $decimals = 0, $units = null, $separator = null, $plus = false)
     {
         $negative = $number < 0;
 
+        $separator = $separator ?? uchr(160);
         $number = number_format(abs($number), $decimals, ',', $separator);
 
         if ($units) {
@@ -600,9 +601,9 @@ if (!function_exists('uchr')) {
 }
 
 if (!function_exists('uord')) {
-    function uord($u)
+    function uord($symbol)
     {
-        $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
+        $k = mb_convert_encoding($symbol, 'UCS-2LE', 'UTF-8');
         $k1 = ord(substr($k, 0, 1));
         $k2 = ord(substr($k, 1, 1));
         return $k2 * 256 + $k1;
