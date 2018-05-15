@@ -404,7 +404,6 @@ if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = null, $plus = false)
     {
         $negative = $number < 0;
-
         $separator = $separator ?? uchr(160);
         $number = number_format(abs($number), $decimals, ',', $separator);
 
@@ -592,10 +591,12 @@ if (!function_exists('uchr')) {
         if (is_scalar($codes)) {
             $codes = func_get_args();
         }
+
         $str = '';
         foreach ($codes as $code) {
             $str .= html_entity_decode('&#'.$code.';', ENT_NOQUOTES, 'UTF-8');
         }
+
         return $str;
     }
 }
@@ -606,6 +607,32 @@ if (!function_exists('uord')) {
         $k = mb_convert_encoding($symbol, 'UCS-2LE', 'UTF-8');
         $k1 = ord(substr($k, 0, 1));
         $k2 = ord(substr($k, 1, 1));
+
         return $k2 * 256 + $k1;
+    }
+}
+
+if (!function_exists('string2binary')) {
+    function string2binary($string)
+    {
+        $chars = str_split($string);
+        foreach ($chars as &$char) {
+            $char = decbin(ord($char));
+            $char = str_pad($char, 8, 0, STR_PAD_LEFT);
+        }
+
+        return implode('', $chars);
+    }
+}
+
+if (!function_exists('binary2string')) {
+    function binary2string($binary)
+    {
+        $chars = str_split($binary, 8);
+        foreach ($chars as &$char) {
+            $char = chr(bindec($char));
+        }
+
+        return implode('', $chars);
     }
 }
