@@ -494,16 +494,19 @@ if (!function_exists('filesize_parse')) {
 }
 
 if (!function_exists('name_initials')) {
-    function name_initials($fullname)
+    function name_initials($fullname, $separator = null, $short = false)
     {
+        $separator = $separator ?? uchr(160);
         $parts = explode(' ', $fullname);
         $result = [];
         $result[] = array_shift($parts);
         foreach ($parts as $part) {
-            $result[] = mb_substr($part, 0, 1).'.';
+            $result[] = mb_substr($part, 0, 1).'.'.($short ? '' : ' ');
         }
+        $result = implode(' ', $result);
+        $result = str_replace(' ', $separator, $result);
 
-        return implode(' ', $result);
+        return trim($result);
     }
 }
 
