@@ -414,8 +414,9 @@ if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = null, $plus = false)
     {
         $negative = $number < 0;
+        $number = abs($number);
         $separator = $separator ?? uchr(160);
-        $number = number_format(abs($number), $decimals, ',', $separator);
+        $result = number_format($number, $decimals, ',', $separator);
 
         if ($units) {
             if (str_contains($units, '|')) {
@@ -432,16 +433,16 @@ if (!function_exists('number')) {
                     $units = $units[0].$units[1];
                 }
             }
-            $number .= $separator.$units;
+            $result .= $separator.$units;
         }
 
         if ($negative) {
-            $number = '−'.$separator.$number;
+            $result = '−'.$separator.$result;
         } elseif ($plus) {
-            $number = '+'.$separator.$number;
+            $result = '+'.$separator.$result;
         }
 
-        return $number;
+        return $result;
     }
 }
 
