@@ -650,3 +650,20 @@ if (!function_exists('binary2string')) {
         return implode('', $chars);
     }
 }
+
+if (!function_exists('mutex')) {
+    /** @return malkusch\lock\mutex\LockMutex */
+    function mutex($name, $timeout = null)
+    {
+        if ($timeout) {
+            $redis = Redis::connection()->client();
+            $mutex = new malkusch\lock\mutex\PredisMutex([$redis], $name, $timeout);
+        } else {
+            $name = md5($name);
+            $file = storage_path("app/$name.mutex");
+            $mutex = new malkusch\lock\mutex\FlockMutex(fopen($file, 'w+'));
+        }
+
+        return $mutex;
+    }
+}
