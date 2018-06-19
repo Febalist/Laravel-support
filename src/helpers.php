@@ -703,3 +703,21 @@ if (!function_exists('switch_case')) {
         return null;
     }
 }
+
+if (!function_exists('switch_case_strict')) {
+    function switch_case_strict($value, ...$args)
+    {
+        $argc = func_num_args() - 1;
+
+        for ($i = 0; $i < $argc; $i = $i + 2) {
+            if ($i == $argc - 1) {
+                return $args[$i];
+            }
+            if ($args[$i] === $value) {
+                return $args[$i + 1];
+            }
+        }
+
+        return null;
+    }
+}
