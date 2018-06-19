@@ -667,3 +667,39 @@ if (!function_exists('mutex')) {
         return $mutex;
     }
 }
+
+if (!function_exists('if_then')) {
+    function if_then(...$args)
+    {
+        $argc = func_num_args();
+
+        for ($i = 0; $i < $argc; $i = $i + 2) {
+            if ($i == $argc - 1) {
+                return $args[$i];
+            }
+            if ($args[$i]) {
+                return $args[$i + 1];
+            }
+        }
+
+        return null;
+    }
+}
+
+if (!function_exists('switch_case')) {
+    function switch_case($value, ...$args)
+    {
+        $argc = func_num_args() - 1;
+
+        for ($i = 0; $i < $argc; $i = $i + 2) {
+            if ($i == $argc - 1) {
+                return $args[$i];
+            }
+            if ($args[$i] == $value) {
+                return $args[$i + 1];
+            }
+        }
+
+        return null;
+    }
+}
