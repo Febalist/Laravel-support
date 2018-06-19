@@ -721,3 +721,16 @@ if (!function_exists('switch_case_strict')) {
         return null;
     }
 }
+
+if (!function_exists('number_compare')) {
+    function number_compare($number, $mt, $eq, $lt, $relative = 0)
+    {
+        if ($number > $relative) {
+            return value($mt);
+        } elseif ($number < $relative) {
+            return value($lt);
+        } else {
+            return value($eq);
+        }
+    }
+}
