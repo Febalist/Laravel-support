@@ -741,3 +741,24 @@ if (!function_exists('escape_like')) {
         return str_replace(['%', '_'], ['\%', '\_'], $string);
     }
 }
+
+if (!function_exists('like_starts')) {
+    function like_starts($string)
+    {
+        return escape_like($string).'%';
+    }
+}
+
+if (!function_exists('like_ends')) {
+    function like_ends($string)
+    {
+        return '%'.escape_like($string);
+    }
+}
+
+if (!function_exists('like_contains')) {
+    function like_contains($string)
+    {
+        return '%'.escape_like($string).'%';
+    }
+}
