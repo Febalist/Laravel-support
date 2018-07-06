@@ -734,3 +734,10 @@ if (!function_exists('number_compare')) {
         }
     }
 }
+
+if (!function_exists('escape_like')) {
+    function escape_like($string)
+    {
+        return str_replace(['%', '_'], ['\%', '\_'], $string);
+    }
+}
