@@ -762,3 +762,25 @@ if (!function_exists('like_contains')) {
         return '%'.escape_like($string).'%';
     }
 }
+
+if (!function_exists('array_combine_values')) {
+    function array_combine_values($array)
+    {
+        $array = array_values($array);
+        $array = array_combine($array, $array);
+
+        return $array;
+    }
+}
+
+if (!function_exists('select_options')) {
+    function select_options($options, $empty = false, $empty_text = '')
+    {
+        $options = array_combine_values($options);
+        if ($empty) {
+            $options = ['' => $empty_text] + $options;
+        }
+
+        return $options;
+    }
+}
