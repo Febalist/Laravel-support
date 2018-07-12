@@ -789,7 +789,7 @@ if (!function_exists('array_init')) {
     function array_init(&$array, $key, $value = null)
     {
         if (array_get($array, $key) === null) {
-            array_set($array, $key, $value);
+            array_set($array, $key, value($value));
         }
     }
 }
