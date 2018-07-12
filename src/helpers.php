@@ -784,3 +784,22 @@ if (!function_exists('select_options')) {
         return $options;
     }
 }
+
+if (!function_exists('array_init')) {
+    function array_init(&$array, $key, $value = null)
+    {
+        if (array_get($array, $key) === null) {
+            array_set($array, $key, $value);
+        }
+    }
+}
+
+if (!function_exists('array_increment')) {
+    function array_increment(&$array, $key, $value = 1)
+    {
+        $value = array_get($array, $key, 0) + $value;
+        array_set($array, $key, $value);
+
+        return $value;
+    }
+}
