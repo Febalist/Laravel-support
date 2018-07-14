@@ -804,6 +804,13 @@ if (!function_exists('array_increment')) {
     }
 }
 
+if (!function_exists('array_wrap_flatten')) {
+    function array_wrap_flatten($value)
+    {
+        return array_wrap(is_array($value) ? array_flatten($value) : $value);
+    }
+}
+
 if (!function_exists('xml2array')) {
     function xml2array($contents, $get_attributes = 1)
     {
