@@ -109,14 +109,22 @@ if (!function_exists('str_between_greedy')) {
 if (!function_exists('str_after_last')) {
     function str_after_last($subject, $search)
     {
-        return $search === '' ? $subject : last(explode($search, $subject));
+        if ($search === '') {
+            return $subject;
+        }
+
+        return last(explode($search, $subject));
     }
 }
 
 if (!function_exists('str_before_last')) {
     function str_before_last($subject, $search)
     {
-        return $search === '' ? $subject : implode($search, array_slice(explode($search, $subject), 0, -1));
+        if ($search === '') {
+            return $subject;
+        }
+
+        return implode($search, array_slice(explode($search, $subject), 0, -1));
     }
 }
 
@@ -124,6 +132,7 @@ if (!function_exists('mb_strrev')) {
     function mb_strrev($string)
     {
         preg_match_all('/./us', $string, $matches);
+
         return join('', array_reverse($matches[0]));
     }
 }
