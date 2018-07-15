@@ -86,6 +86,26 @@ if (!function_exists('str_between')) {
     }
 }
 
+if (!function_exists('str_between_last')) {
+    function str_between_last($subject, $after, $before)
+    {
+        $subject = str_before_last($subject, $before);
+        $subject = str_after_last($subject, $after);
+
+        return $subject;
+    }
+}
+
+if (!function_exists('str_between_greedy')) {
+    function str_between_greedy($subject, $after, $before)
+    {
+        $subject = str_after($subject, $after);
+        $subject = str_before_last($subject, $before);
+
+        return $subject;
+    }
+}
+
 if (!function_exists('str_after_last')) {
     function str_after_last($subject, $search)
     {
