@@ -86,6 +86,42 @@ if (!function_exists('str_between')) {
     }
 }
 
+if (!function_exists('str_after_last')) {
+    function str_after_last($subject, $search)
+    {
+        return $search === '' ? $subject : last(explode($search, $subject));
+    }
+}
+
+if (!function_exists('str_before_last')) {
+    function str_before_last($subject, $search)
+    {
+        return $search === '' ? $subject : implode($search, array_slice(explode($search, $subject), 0, -1));
+    }
+}
+
+if (!function_exists('mb_strrev')) {
+    function mb_strrev($string)
+    {
+        preg_match_all('/./us', $string, $matches);
+        return join('', array_reverse($matches[0]));
+    }
+}
+
+if (!function_exists('class_name')) {
+    function class_name($class)
+    {
+        return str_after_last($class, '\\');
+    }
+}
+
+if (!function_exists('get_class_name')) {
+    function get_class_name($object)
+    {
+        return class_name(get_class($object));
+    }
+}
+
 if (!function_exists('str_uuid')) {
     function str_uuid($ordered = false)
     {
