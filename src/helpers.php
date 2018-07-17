@@ -163,9 +163,8 @@ if (!function_exists('str_uuid')) {
 if (!function_exists('list_cleanup')) {
     function list_cleanup($array, $callback = null, $arguments = [])
     {
-        if ($array instanceof \Illuminate\Support\Collection) {
-            $array = $array->all();
-        }
+        $array = array_value($array);
+
         if ($callback) {
             $array = array_map_args($array, $callback, $arguments);
         }
@@ -369,6 +368,8 @@ if (!function_exists('array_flip_multiple')) {
 if (!function_exists('is_assoc')) {
     function is_assoc($array)
     {
+        $array = array_value($array);
+
         if ([] === $array) {
             return false;
         }
@@ -828,8 +829,34 @@ if (!function_exists('like_contains')) {
     }
 }
 
+if (!function_exists('to_array')) {
+    function to_array($value)
+    {
+        if ($value instanceof \Illuminate\Support\Collection) {
+            return $value->toArray();
+        }
+
+        return json_parse(json_stringify($value), []);
+    }
+}
+
+if (!function_exists('array_value')) {
+    function array_value($value)
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if ($value instanceof \Illuminate\Support\Collection) {
+            return $value->all();
+        }
+
+        return (array) $value;
+    }
+}
+
 if (!function_exists('array_combine_values')) {
-    function array_combine_values($array)
+    function array_combine_values(array $array)
     {
         $array = array_values($array);
         $array = array_combine($array, $array);
@@ -841,6 +868,7 @@ if (!function_exists('array_combine_values')) {
 if (!function_exists('select_options')) {
     function select_options($options, $empty = false, $empty_text = '')
     {
+        $options = array_value($options);
         $options = array_combine_values($options);
         if ($empty) {
             $options = ['' => $empty_text] + $options;
@@ -851,7 +879,7 @@ if (!function_exists('select_options')) {
 }
 
 if (!function_exists('array_init')) {
-    function array_init(&$array, $key, $value = null)
+    function array_init(array &$array, $key, $value = null)
     {
         if (array_get($array, $key) === null) {
             array_set($array, $key, value($value));
@@ -860,7 +888,7 @@ if (!function_exists('array_init')) {
 }
 
 if (!function_exists('array_increment')) {
-    function array_increment(&$array, $key, $value = 1)
+    function array_increment(array &$array, $key, $value = 1)
     {
         $value = array_get($array, $key, 0) + $value;
         array_set($array, $key, $value);
