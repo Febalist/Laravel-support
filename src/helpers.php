@@ -273,7 +273,13 @@ if (!function_exists('build_url')) {
 if (!function_exists('query')) {
     function query($params, $url = null)
     {
-        $url = $url ?: request()->fullUrl();
+        return url_query($url, $url ?: request()->fullUrl());
+    }
+}
+
+if (!function_exists('url_query')) {
+    function url_query($url, $params)
+    {
         $url = parse_url($url);
         parse_str($url['query'] ?? '', $query);
         $params = array_merge($query, $params);
