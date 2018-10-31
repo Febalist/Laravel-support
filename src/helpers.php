@@ -137,22 +137,6 @@ if (!function_exists('mb_strrev')) {
     }
 }
 
-if (!function_exists('class_name')) {
-    /** @deprecated */
-    function class_name($class)
-    {
-        return str_after_last($class, '\\');
-    }
-}
-
-if (!function_exists('get_class_name')) {
-    /** @deprecated */
-    function get_class_name($object)
-    {
-        return class_name(get_class($object));
-    }
-}
-
 if (!function_exists('str_uuid')) {
     function str_uuid($ordered = false)
     {
