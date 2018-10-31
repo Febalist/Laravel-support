@@ -6,10 +6,10 @@
     }
   },
   "require": {
-    "illuminate/support": "^5.5",
+    "illuminate/support": "^5.7",
     "jenssegers/date": "^3.0",
     "malkusch/lock": "^1.1",
-    "moontoast/math": "*",
+    "moontoast/math": "^1.0",
     "sebastiaanluca/laravel-helpers": "^1.0"
   },
   "extra": {
