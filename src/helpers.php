@@ -996,3 +996,19 @@ if (!function_exists('xml2array')) {
         return ($xml_array);
     }
 }
+
+if (!function_exists('model_route')) {
+    function model_route($model, $action = null, $parameters = [], $absolute = true)
+    {
+        $prefix = snake_case(str_plural(class_basename($model)));
+
+        if ($model instanceof \Illuminate\Database\Eloquent\Model) {
+            array_unshift($parameters, $model);
+            $action = $action ?: 'show';
+        } else {
+            $action = $action ?: 'index';
+        }
+
+        return route("$prefix.$action", $parameters, $absolute);
+    }
+}
