@@ -15,7 +15,7 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Carbon\Carbon:: useMonthsOverflow(false);
+        \Carbon\Carbon::useMonthsOverflow(false);
 
         Blade::if('debug', function () {
             return config('app.debug');
@@ -27,7 +27,6 @@ class SupportServiceProvider extends ServiceProvider
             return preg_match('/^[-+]?\d+[.,]?\d*$/', $value);
         });
 
-        $this->loadViewsFrom(__DIR__.'/../views', 'support');
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'support');
     }
 
@@ -39,16 +38,6 @@ class SupportServiceProvider extends ServiceProvider
     public function register()
     {
         Macro::register();
-
-        if ($this->app->environment('local')) {
-            $this->app->singleton(\Faker\Generator::class, function () {
-                return \Faker\Factory::create(language());
-            });
-        }
-
-        $this->publishes([
-            __DIR__.'/../views/publishes' => base_path('resources/views'),
-        ]);
 
         require_once __DIR__.'/helpers.php';
     }
