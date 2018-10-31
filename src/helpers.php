@@ -1012,3 +1012,12 @@ if (!function_exists('model_route')) {
         return route("$prefix.$action", $parameters, $absolute);
     }
 }
+
+if (!function_exists('model_view')) {
+    function model_view($model, $action, $data = [], $mergeData = [])
+    {
+        $prefix = snake_case(str_plural(class_basename($model)));
+
+        return view("$prefix.$action", $data, $mergeData);
+    }
+}
