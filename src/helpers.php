@@ -875,7 +875,11 @@ if (!function_exists('select_options')) {
     function select_options($options, $empty = false, $empty_text = '')
     {
         $options = array_value($options);
-        $options = array_combine_values($options);
+
+        if (!is_assoc($options)) {
+            $options = array_combine_values($options);
+        }
+
         if ($empty) {
             $options = ['' => $empty_text] + $options;
         }
