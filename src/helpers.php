@@ -926,3 +926,10 @@ if (!function_exists('model_view')) {
         return view("$prefix.$action", $data, $mergeData);
     }
 }
+
+if (!function_exists('route_signed')) {
+    function route_signed($name, $parameters, $expiration = null, $absolute = true)
+    {
+        return URL::signedRoute($name, array_filter($parameters), $expiration, $absolute);
+    }
+}
