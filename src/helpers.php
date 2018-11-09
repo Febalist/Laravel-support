@@ -915,3 +915,10 @@ if (!function_exists('array_wrap_flatten')) {
         return array_wrap(is_array($value) ? array_flatten($value) : $value);
     }
 }
+
+if (!function_exists('route_signed')) {
+    function route_signed($name, $parameters, $expiration = null, $absolute = true)
+    {
+        return URL::signedRoute($name, array_filter($parameters), $expiration, $absolute);
+    }
+}
