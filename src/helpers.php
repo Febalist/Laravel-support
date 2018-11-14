@@ -382,11 +382,12 @@ if (!function_exists('microsleep')) {
 if (!function_exists('filename_normalize')) {
     function filename_normalize($name, $spaces = ' ')
     {
-        $name = mb_ereg_replace("\s+", $spaces, $name);
-        $name = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $name);
-        $name = mb_ereg_replace("([\.]{2,})", '', $name);
+        $name = mb_ereg_replace('\s+', $spaces, $name);
+        $name = mb_ereg_replace('[\\\\\/?%*:|\"<>]', '', $name);
+        $name = mb_ereg_replace('\.+', '.', trim($name));
+        $name = mb_ereg_replace('\.$', '', trim($name));
 
-        return $name;
+        return trim($name);
     }
 }
 
