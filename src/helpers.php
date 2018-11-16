@@ -79,10 +79,31 @@ if (!function_exists('replace_newlines')) {
 }
 
 if (!function_exists('str_between')) {
-    function str_between($subject, $after, $before)
+    function str_between($subject, $after, $before, $reverse = false, $after_last = false, $before_last = false)
     {
-        $subject = str_after($subject, $after);
-        $subject = str_before($subject, $before);
+        if ($reverse) {
+            if ($before_last) {
+                $subject = str_before_last($subject, $before);
+            } else {
+                $subject = str_before($subject, $before);
+            }
+            if ($after_last) {
+                $subject = str_after_last($subject, $after);
+            } else {
+                $subject = str_after($subject, $after);
+            }
+        } else {
+            if ($after_last) {
+                $subject = str_after_last($subject, $after);
+            } else {
+                $subject = str_after($subject, $after);
+            }
+            if ($before_last) {
+                $subject = str_before_last($subject, $before);
+            } else {
+                $subject = str_before($subject, $before);
+            }
+        }
 
         return $subject;
     }
@@ -91,20 +112,14 @@ if (!function_exists('str_between')) {
 if (!function_exists('str_between_last')) {
     function str_between_last($subject, $after, $before)
     {
-        $subject = str_before_last($subject, $before);
-        $subject = str_after_last($subject, $after);
-
-        return $subject;
+        return str_between($subject, $after, $before, true, true, true);
     }
 }
 
 if (!function_exists('str_between_greedy')) {
     function str_between_greedy($subject, $after, $before)
     {
-        $subject = str_after($subject, $after);
-        $subject = str_before_last($subject, $before);
-
-        return $subject;
+        return str_between($subject, $after, $before, false, false, true);
     }
 }
 
