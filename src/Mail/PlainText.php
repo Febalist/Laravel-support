@@ -5,6 +5,7 @@ namespace Febalist\Laravel\Support\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 
+/** @deprecated */
 class PlainText extends Mailable
 {
     use Queueable;
