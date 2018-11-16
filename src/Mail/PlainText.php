@@ -14,7 +14,7 @@ class PlainText extends Mailable
     public function __construct($subject, $text)
     {
         $this->subject = $subject;
-        $this->text = $text;
+        $this->text = is_array($text) ? implode("\n", $text) : $text;
     }
 
     public function build()
