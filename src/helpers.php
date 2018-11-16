@@ -443,10 +443,21 @@ if (!function_exists('digits')) {
 if (!function_exists('email_normalize')) {
     function email_normalize($address)
     {
-        if (!str_contains($address, '@') || mb_strlen($address) < 7) {
+        if (!str_contains($address, '@')) {
             return;
         }
+
+        $address = implode('@', [
+            str_between($address, '<', '@', true, true, false),
+            str_between($address, '@', '>', false, false, false),
+        ]);
+
         $address = trim($address);
+
+        if (mb_strlen($address) < 7) {
+            return null;
+        }
+
         $address = mb_strtolower($address);
 
         return $address;
