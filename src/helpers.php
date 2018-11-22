@@ -16,6 +16,10 @@ if (!function_exists('json_parse')) {
     /** @return array */
     function json_parse($data = null, $default = null, $asObject = false)
     {
+        if (!$asObject && is_array($data)) {
+            return $data;
+        }
+        
         try {
             return json_decode($data, !$asObject);
         } catch (Exception $e) {
