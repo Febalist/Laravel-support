@@ -4,6 +4,7 @@ namespace Febalist\Laravel\Support;
 
 use Blade;
 use Illuminate\Support\ServiceProvider;
+use Mingalevme\Illuminate\Lock\LaravelLockServiceProvider;
 use Validator;
 
 class SupportServiceProvider extends ServiceProvider
@@ -38,6 +39,9 @@ class SupportServiceProvider extends ServiceProvider
     public function register()
     {
         Macro::register();
+
+        $this->app->register(LaravelLockServiceProvider::class);
+        $this->mergeConfigFrom(base_path('vendor/mingalevme/illuminate-lock/config/lock.php'), 'lock');
 
         require_once __DIR__.'/helpers.php';
     }

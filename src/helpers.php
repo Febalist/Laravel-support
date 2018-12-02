@@ -19,7 +19,7 @@ if (!function_exists('json_parse')) {
         if (!$asObject && is_array($data)) {
             return $data;
         }
-        
+
         try {
             return json_decode($data, !$asObject);
         } catch (Exception $e) {
@@ -756,6 +756,34 @@ if (!function_exists('mutex')) {
         }
 
         return $mutex;
+    }
+}
+
+if (!function_exists('lock')) {
+    /**
+     * @return Symfony\Component\Lock\Lock
+     * @see https://symfony.com/doc/current/components/lock.html
+     */
+    function lock($resource, $ttl = 300.0, $autoRelease = true)
+    {
+        $fixed = false;
+
+        beginning:
+        try {
+            return Mingalevme\Illuminate\Lock\Facades\Lock::createLock($resource, $ttl, $autoRelease);
+        } catch (Symfony\Component\Lock\Exception\InvalidArgumentException $exception) {
+            if (str_contains($exception->getMessage(), 'is not writable')
+                && config('lock.default') == 'flock'
+                && !$fixed) {
+                $path = config('lock.stores.flock.path');
+                if (!File::isDirectory($path)) {
+                    File::makeDirectory($path, 755, true, true);
+                    $fixed = true;
+                    goto beginning;
+                }
+            }
+            throw $exception;
+        }
     }
 }
 

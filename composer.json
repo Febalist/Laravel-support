@@ -10,7 +10,8 @@
     "jenssegers/date": "^3.0",
     "malkusch/lock": "^1.1",
     "moontoast/math": "^1.0",
-    "sebastiaanluca/laravel-helpers": "^1.0"
+    "sebastiaanluca/laravel-helpers": "^1.0",
+    "mingalevme/illuminate-lock": "^1.0"
   },
   "extra": {
     "laravel": {
