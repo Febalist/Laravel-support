@@ -5,7 +5,7 @@ namespace Febalist\Laravel\Support\Http\Middleware;
 use Closure;
 use Febalist\Laravel\Support\Sentry;
 
-class SentryContext
+class SupportMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class SentryContext
      */
     public function handle($request, Closure $next)
     {
-        Sentry::middleware($request);
+        Sentry::instance()->middleware($request);
 
         return $next($request);
     }

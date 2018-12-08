@@ -8,86 +8,109 @@ use Raven_Client;
 
 class Sentry
 {
+    /** @var static */
+    protected static $instance;
     /** @var Raven_Client */
-    protected static $client;
-    protected static $app_user_context;
-    protected static $app_tags_context;
+    protected $client;
+    protected $app_tags_callback;
+    protected $app_user_callback;
+
+    public function __construct()
+    {
+        $this->client = app()->bound('sentry') && config('sentry.dsn') ? app('sentry') : null;
+    }
+
+    public static function instance()
+    {
+        if (!static::$instance) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+    }
 
     public static function user(callable $callback)
     {
-        static::$app_user_context = $callback;
+        static::instance()->setAppUserCallback($callback);
     }
 
     public static function tags(callable $callback)
     {
-        static::$app_tags_context = $callback;
+        static::instance()->setAppTagsCallback($callback);
     }
 
-    public static function boot()
+    public function setAppTagsCallback(callable $callback)
     {
-        static::$client = app()->bound('sentry') && config('sentry.dsn') ? app('sentry') : null;
+        $this->app_tags_callback = $callback;
+    }
 
-        if (static::$client) {
-            static::$client->setRelease(config('app.version'));
+    public function setAppUserCallback(callable $callback)
+    {
+        $this->app_user_callback = $callback;
+    }
 
-            static::add_tags([
+    public function boot()
+    {
+        $this->client = app()->bound('sentry') && config('sentry.dsn') ? app('sentry') : null;
+
+        if ($this->client) {
+            $this->client->setRelease(config('app.version'));
+
+            $this->add_tags([
                 'name' => config('app.name'),
                 'host' => str_after(config('app.url'), '://'),
                 'console' => app()->runningInConsole(),
                 'command' => implode(' ', request()->server('argv', [])) ?: null,
             ]);
 
-            if ($app_tags_context = static::$app_tags_context) {
-                static::add_tags($app_tags_context());
+            if ($app_tags_callback = $this->app_tags_callback) {
+                $this->add_tags($app_tags_callback());
             }
         }
     }
 
-    public static function middleware(Request $request)
+    public function middleware(Request $request)
     {
-        if (static::$client) {
+        if ($this->client) {
             $user = Auth::user();
 
-            static::add_tags([
+            $this->add_tags([
                 'route' => $request->route()->getName(),
                 'action' => $request->route()->getActionName(),
             ]);
 
-            static::add_user([
+            $this->add_user([
                 'id' => $user->id ?? 0,
                 'guest' => !$user,
                 'ip_address' => $request->ip(),
             ]);
 
             if ($user) {
-                if ($app_user_context = static::$app_user_context) {
-                    static::add_user($app_user_context($user));
+                if ($app_user_callback = $this->app_user_callback) {
+                    $this->add_user($app_user_callback($user));
                 }
             }
 
-            if ($dsn = static::public_dsn()) {
+            if ($dsn = $this->public_dsn()) {
                 javascript('sentry', [
                     'dsn' => $dsn,
-                    'context' => static::$client->context,
-                    'debug' => config('app.debug'),
-                    'release' => config('version.number'),
-                    'environment' => config('app.env'),
+                    'context' => $this->client->context,
                 ]);
             }
         }
     }
 
-    protected static function add_tags(array $data)
+    protected function add_tags(array $data)
     {
-        static::$client->tags_context(array_filter($data));
+        $this->client->tags_context(array_filter($data));
     }
 
-    protected static function add_user(array $data)
+    protected function add_user(array $data)
     {
-        static::$client->user_context(array_filter($data));
+        $this->client->user_context(array_filter($data));
     }
 
-    protected static function public_dsn()
+    protected function public_dsn()
     {
         if ($dsn = config('sentry.dsn')) {
             preg_match_all('/^https:\/\/(\w+):(\w+)@(.+)$/', $dsn, $matches, PREG_SET_ORDER, 0);

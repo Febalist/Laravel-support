@@ -16,7 +16,14 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Sentry::boot();
+        javascript([
+            'env' => config('app.env'),
+            'debug' => config('app.debug'),
+            'version' => config('version.number'),
+            'csrf_token' => csrf_token(),
+        ]);
+
+        Sentry::instance()->boot();
 
         \Carbon\Carbon::useMonthsOverflow(false);
 

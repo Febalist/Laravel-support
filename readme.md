@@ -10,12 +10,12 @@ npm install --save-dev raven-js@^3.27
     protected $middlewareGroups = [
         'web' => [
             // ...
-            \Febalist\Laravel\Support\Http\Middleware\SentryContext::class,
+            \Febalist\Laravel\Support\Http\Middleware\SupportMiddleware::class,
         ],
 
         'api' => [
             // ...
-            \Febalist\Laravel\Support\Http\Middleware\SentryContext::class,
+            \Febalist\Laravel\Support\Http\Middleware\SupportMiddleware::class,
         ],
     ];
 ```
