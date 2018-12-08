@@ -743,7 +743,10 @@ if (!function_exists('binary2string')) {
 }
 
 if (!function_exists('mutex')) {
-    /** @return malkusch\lock\mutex\LockMutex */
+    /**
+     * @deprecated
+     * @return malkusch\lock\mutex\LockMutex
+     */
     function mutex($name, $timeout = null)
     {
         if ($timeout) {
