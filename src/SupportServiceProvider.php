@@ -16,6 +16,8 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Sentry::boot();
+
         \Carbon\Carbon::useMonthsOverflow(false);
 
         Blade::if('debug', function () {
@@ -42,6 +44,7 @@ class SupportServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__.'/../config/javascript.php', 'javascript');
         $this->mergeConfigFrom(__DIR__.'/../config/version.php', 'version');
+        $this->mergeConfigFrom(__DIR__.'/../config/sentry.php', 'sentry');
 
         $this->app->register(LaravelLockServiceProvider::class);
         $this->mergeConfigFrom(base_path('vendor/mingalevme/illuminate-lock/config/lock.php'), 'lock');
