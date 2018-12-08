@@ -40,6 +40,8 @@ class SupportServiceProvider extends ServiceProvider
     {
         Macro::register();
 
+        $this->mergeConfigFrom(__DIR__.'/../config/javascript.php', 'javascript');
+
         $this->app->register(LaravelLockServiceProvider::class);
         $this->mergeConfigFrom(base_path('vendor/mingalevme/illuminate-lock/config/lock.php'), 'lock');
 

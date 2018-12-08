@@ -11,7 +11,8 @@
     "malkusch/lock": "^1.1",
     "moontoast/math": "^1.0",
     "sebastiaanluca/laravel-helpers": "^1.0",
-    "mingalevme/illuminate-lock": "^1.0"
+    "mingalevme/illuminate-lock": "^1.0",
+    "laracasts/utilities": "^3.0"
   },
   "extra": {
     "laravel": {

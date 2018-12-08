@@ -995,3 +995,14 @@ if (!function_exists('route_signed')) {
         return URL::signedRoute($name, array_filter($parameters), $expiration, $absolute);
     }
 }
+
+if (!function_exists('javascript')) {
+    function javascript($var, $val = null)
+    {
+        if (!is_array($var)) {
+            $var = [$var => $val];
+        }
+
+        JavaScript::put($var);
+    }
+}
