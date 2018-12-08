@@ -69,6 +69,9 @@ class Sentry
                 javascript('sentry', [
                     'dsn' => $dsn,
                     'context' => static::$client->context,
+                    'debug' => config('app.debug'),
+                    'release' => config('version.number'),
+                    'environment' => config('app.env'),
                 ]);
             }
         }

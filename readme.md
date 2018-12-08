@@ -2,6 +2,7 @@
 
 ```bash
 composer require febalist/laravel-support
+npm install --save-dev raven-js@^3.27
 ```
 
 `app/Http/Kernel.php`:
@@ -37,4 +38,13 @@ composer require febalist/laravel-support
             ];
         });
     }
+```
+
+```javascript
+window.Vue = require('vue');
+require('./../../vendor/febalist/laravel-support/js/raven');
+
+raven.context(function() {
+  // ...
+});
 ```
