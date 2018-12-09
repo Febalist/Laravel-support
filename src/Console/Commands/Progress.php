@@ -3,6 +3,7 @@
 namespace Febalist\Laravel\Support\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 /** @mixin Command */
 trait Progress
@@ -33,6 +34,12 @@ trait Progress
 
     public function progressMax($max)
     {
+        if ($max instanceof Collection) {
+            $max = $max->count();
+        } elseif (is_array($max)) {
+            $max = count($max);
+        }
+
         $this->getProgressBar()->setFormat(" %current% [%bar%] %elapsed:6s%%message%\n");
         $this->getProgressBar()->setMaxSteps($max);
         if ($max) {
