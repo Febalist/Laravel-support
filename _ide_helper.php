@@ -51,4 +51,28 @@ namespace Illuminate\Support {
     {
 
     }
+
+    class Collection
+    {
+        public function append($source)
+        {
+            return $this;
+        }
+
+        public function without($values)
+        {
+            return $this;
+        }
+
+        public function remove($values)
+        {
+            return $this;
+        }
+        
+        public function replace($values)
+        {
+            return $this;
+        }
+    }
 }
+
