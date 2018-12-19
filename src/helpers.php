@@ -1006,3 +1006,14 @@ if (!function_exists('javascript')) {
         JavaScript::put($var);
     }
 }
+
+if (!function_exists('model_key')) {
+    function model_key($model)
+    {
+        if ($model instanceof Illuminate\Database\Eloquent\Model) {
+            return $model->getKey();
+        }
+
+        return $model;
+    }
+}
