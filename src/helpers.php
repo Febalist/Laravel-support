@@ -844,6 +844,17 @@ if (!function_exists('switch_case_strict')) {
     }
 }
 
+if (!function_exists('try_continue')) {
+    function try_continue($callback, ...$arguments)
+    {
+        try {
+            return $callback(...$arguments);
+        } catch (\Exception $exception) {
+            report($exception);
+        }
+    }
+}
+
 if (!function_exists('number_compare')) {
     function number_compare($number, $mt, $eq, $lt, $relative = 0)
     {
