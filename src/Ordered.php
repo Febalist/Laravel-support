@@ -13,7 +13,7 @@ trait Ordered
 {
     public function scopeOrdered(Builder $builder)
     {
-        foreach ($this->orderBy ?? [$this->getKeyName()] as $column) {
+        foreach (array_wrap($this->orderBy ?? $this->getKeyName()) as $column) {
             $direction = 'asc';
 
             if (starts_with($column, '-')) {
