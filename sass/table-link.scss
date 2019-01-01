@@ -1,5 +1,5 @@
 tr, th, td {
-  &[href]:not([href=""]) {
+  &[href]:not([href=""]), &.table-link {
     cursor: pointer;
 
     &:hover {
