@@ -16,6 +16,10 @@ class SupportMiddleware
      */
     public function handle($request, Closure $next)
     {
+        javascript([
+            'csrf_token' => csrf_token(),
+        ]);
+
         Sentry::instance()->middleware($request);
 
         return $next($request);
