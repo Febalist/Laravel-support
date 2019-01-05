@@ -93,6 +93,8 @@ class SupportServiceProvider extends ServiceProvider
             });
         }
 
+        $this->bootBlade();
+
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'support');
     }
 
@@ -113,5 +115,15 @@ class SupportServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(base_path('vendor/mingalevme/illuminate-lock/config/lock.php'), 'lock');
 
         require_once __DIR__.'/helpers.php';
+    }
+
+    protected function bootBlade()
+    {
+        $this->publishes([__DIR__.'/../views' => resource_path('views/vendor/support')]);
+        $this->loadViewsFrom(__DIR__.'/../views', 'support');
+
+        Blade::component('support::components.alert', 'alert');
+        Blade::component('support::components.group', 'group');
+        Blade::component('support::components.delete', 'delete');
     }
 }
