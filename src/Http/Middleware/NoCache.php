@@ -16,10 +16,11 @@ class NoCache
      */
     public function handle($request, Closure $next)
     {
-        /** @var Response $response */
         $response = $next($request);
 
-        $response->header('Cache-Control', 'no-cache, private, no-store');
+        if ($response instanceof Response) {
+            $response->header('Cache-Control', 'no-cache, private, no-store');
+        }
 
         return $response;
     }
