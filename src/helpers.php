@@ -1028,3 +1028,10 @@ if (!function_exists('model_key')) {
         return $model;
     }
 }
+
+if (!function_exists('serialize_hash')) {
+    function serialize_hash(...$arguments): string
+    {
+        return sha1(serialize($arguments));
+    }
+}
