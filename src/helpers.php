@@ -785,13 +785,25 @@ if (!function_exists('lock')) {
 if (!function_exists('sync')) {
     function sync($name, callable $callback, $ttl = 300.0, $autoRelease = true)
     {
+        static $locks = [];
+
         $lock = lock($name, $ttl, $autoRelease);
+
+        if (isset($locks[$name]) && !$lock->acquire()) {
+            unset($locks[$name]);
+            $lock->release();
+            throw new Exception('Already locked');
+        }
+
         $lock->acquire(true);
+        $locks[$name] = 1;
 
         try {
             $result = $callback($lock);
+            unset($locks[$name]);
             $lock->release();
         } catch (Exception $exception) {
+            unset($locks[$name]);
             $lock->release();
             throw $exception;
         }
