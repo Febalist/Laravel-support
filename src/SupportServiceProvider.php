@@ -114,9 +114,6 @@ class SupportServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/version.php', 'version');
         $this->mergeConfigFrom(__DIR__.'/../config/sentry.php', 'sentry');
 
-        $this->app->register(LaravelLockServiceProvider::class);
-        $this->mergeConfigFrom(base_path('vendor/mingalevme/illuminate-lock/config/lock.php'), 'lock');
-
         require_once __DIR__.'/helpers.php';
     }
 

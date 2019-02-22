@@ -767,26 +767,36 @@ if (!function_exists('lock')) {
      * @return Symfony\Component\Lock\Lock
      * @see https://symfony.com/doc/current/components/lock.html
      */
-    function lock($resource, $ttl = 300.0, $autoRelease = true)
+    function lock($name, $ttl = 300.0, $autoRelease = true)
     {
-        $fixed = false;
+        static $factory = null;
 
-        beginning:
+        if (!$factory) {
+            $store = new \Symfony\Component\Lock\Store\FlockStore(sys_get_temp_dir());
+            $factory = $factory ?? new \Symfony\Component\Lock\Factory($store);
+        }
+
+        $resource = serialize_hash(base_path(), $name);
+
+        return $factory->createLock($resource);
+    }
+}
+
+if (!function_exists('sync')) {
+    function sync($name, callable $callback, $ttl = 300.0, $autoRelease = true)
+    {
+        $lock = lock($name, $ttl, $autoRelease);
+        $lock->acquire(true);
+
         try {
-            return Mingalevme\Illuminate\Lock\Facades\Lock::createLock($resource, $ttl, $autoRelease);
-        } catch (Symfony\Component\Lock\Exception\InvalidArgumentException $exception) {
-            if (str_contains($exception->getMessage(), 'is not writable')
-                && config('lock.default') == 'flock'
-                && !$fixed) {
-                $path = config('lock.stores.flock.path');
-                if (!File::isDirectory($path)) {
-                    File::makeDirectory($path, 755, true, true);
-                    $fixed = true;
-                    goto beginning;
-                }
-            }
+            $result = $callback($lock);
+            $lock->release();
+        } catch (Exception $exception) {
+            $lock->release();
             throw $exception;
         }
+
+        return $result;
     }
 }
 
