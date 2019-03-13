@@ -44,7 +44,7 @@ trait SingleJob
         if ($status == SingleJobStatus::FREE) {
             cache()->forget($this->getSingleJobCacheKey());
         } else {
-            cache()->forever($this->getSingleJobCacheKey(), $status);
+            cache()->put($this->getSingleJobCacheKey(), $status, now()->addHours(6));
         }
     }
 
