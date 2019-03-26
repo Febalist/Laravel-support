@@ -1057,3 +1057,11 @@ if (!function_exists('serialize_hash')) {
         return sha1(serialize($arguments));
     }
 }
+
+if (!function_exists('decimal')) {
+    /** @return \Litipk\BigNumbers\Decimal */
+    function decimal($value, $scale = null)
+    {
+        return Litipk\BigNumbers\Decimal::create($value, $scale);
+    }
+}
