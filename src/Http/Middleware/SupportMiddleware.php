@@ -16,8 +16,18 @@ class SupportMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $broadcasting = [
+            'driver' => config('broadcasting.default'),
+        ];
+
+        if ($broadcasting['driver'] == 'pusher') {
+            $broadcasting['key'] = config('broadcasting.connections.pusher.key');
+            $broadcasting['cluster'] = config('broadcasting.connections.pusher.options.cluster');
+        }
+
         javascript([
             'csrf_token' => csrf_token(),
+            'broadcasting' => $broadcasting,
         ]);
 
         Sentry::instance()->middleware($request);
