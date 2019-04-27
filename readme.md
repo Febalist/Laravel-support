@@ -2,7 +2,6 @@
 
 ```bash
 composer require febalist/laravel-support
-npm install --save-dev raven-js@^3.27
 ```
 
 `app/Http/Kernel.php`:
@@ -20,8 +19,18 @@ npm install --save-dev raven-js@^3.27
     ];
 ```
 
+## Sentry
+
+```bash
+npm install --save-dev raven-js@^3.27
+```
+
 `app/Providers/AppServiceProvider.php`
 ```php
+use Febalist\Laravel\Support\Sentry;
+
+//...
+
     public function boot()
     {
         // ...
@@ -37,6 +46,22 @@ npm install --save-dev raven-js@^3.27
                 'name' => config('app.name'),
             ];
         });
+    }
+```
+
+`app/Exceptions/Handler.php`
+```php
+use Febalist\Laravel\Support\Sentry;
+
+//...
+
+    public function report(Exception $exception)
+    {
+        if ($this->shouldReport($exception)) {
+            Sentry::report($exception);
+        }
+
+        parent::report($exception);
     }
 ```
 

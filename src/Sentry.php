@@ -3,6 +3,7 @@
 namespace Febalist\Laravel\Support;
 
 use Auth;
+use Exception;
 use Illuminate\Http\Request;
 use Raven_Client;
 
@@ -15,9 +16,21 @@ class Sentry
     protected $app_tags_callback;
     protected $app_user_callback;
 
-    public function __construct()
+    protected function __construct()
     {
-        $this->client = app()->bound('sentry') && config('sentry.dsn') ? app('sentry') : null;
+        $this->client = static::enabled() ? app('sentry') : null;
+    }
+
+    public static function enabled()
+    {
+        return app()->bound('sentry') && config('sentry.dsn');
+    }
+
+    public static function report(Exception $exception)
+    {
+        if (static::enabled()) {
+            static::instance()->capture($exception);
+        }
     }
 
     public static function instance()
@@ -51,8 +64,6 @@ class Sentry
 
     public function boot()
     {
-        $this->client = app()->bound('sentry') && config('sentry.dsn') ? app('sentry') : null;
-
         if ($this->client) {
             $this->client->setRelease(config('app.version'));
 
@@ -98,6 +109,11 @@ class Sentry
                 ]);
             }
         }
+    }
+
+    protected function capture(Exception $exception)
+    {
+        $this->client->captureException($exception);
     }
 
     protected function add_tags(array $data)
