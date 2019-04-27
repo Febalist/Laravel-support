@@ -745,6 +745,7 @@ if (!function_exists('binary2string')) {
 if (!function_exists('lock')) {
     /**
      * @return Symfony\Component\Lock\Lock
+     * @deprecated
      * @see https://symfony.com/doc/current/components/lock.html
      */
     function lock($name, $ttl = 300.0, $autoRelease = true)
@@ -763,6 +764,7 @@ if (!function_exists('lock')) {
 }
 
 if (!function_exists('sync')) {
+    /** @deprecated */
     function sync($name, callable $callback, $ttl = 300.0, $autoRelease = true)
     {
         static $locks = [];
