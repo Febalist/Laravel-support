@@ -63,6 +63,7 @@ if (!function_exists('chance')) {
 }
 
 if (!function_exists('upload_limit')) {
+    /** @deprecated */
     function upload_limit($mb = false)
     {
         $size = min([
@@ -491,6 +492,7 @@ if (!function_exists('carbon')) {
 }
 
 if (!function_exists('cache_remember')) {
+    /** @deprecated */
     function cache_remember($key, $minutes, $callback, array $arguments = [], $driver = null)
     {
         $hash = array_hash($arguments);
@@ -538,6 +540,7 @@ if (!function_exists('number')) {
 }
 
 if (!function_exists('filesize_units')) {
+    /** @deprecated */
     function filesize_units($locale = null)
     {
         return array_get([
@@ -548,6 +551,7 @@ if (!function_exists('filesize_units')) {
 }
 
 if (!function_exists('filesize_format')) {
+    /** @deprecated */
     function filesize_format($size, $locale = 'en')
     {
         $units = filesize_units($locale);
@@ -559,6 +563,7 @@ if (!function_exists('filesize_format')) {
 }
 
 if (!function_exists('filesize_parse')) {
+    /** @deprecated */
     function filesize_parse($string, $locale = 'en')
     {
         $units = filesize_units($locale);
@@ -646,6 +651,7 @@ if (!function_exists('str_limit_hard')) {
 }
 
 if (!function_exists('language')) {
+    /** @deprecated */
     function language($locale = null)
     {
         $locales = [
@@ -980,6 +986,7 @@ if (!function_exists('array_wrap_flatten')) {
 }
 
 if (!function_exists('model_route')) {
+    /** @deprecated */
     function model_route($model, $action = null, $parameters = [], $absolute = true)
     {
         $prefix = snake_case(str_plural(class_basename($model)));
@@ -996,6 +1003,7 @@ if (!function_exists('model_route')) {
 }
 
 if (!function_exists('model_view')) {
+    /** @deprecated */
     function model_view($model, $action, $data = [], $mergeData = [])
     {
         $prefix = snake_case(str_plural(class_basename($model)));
