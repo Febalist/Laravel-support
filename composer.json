@@ -6,6 +6,7 @@
     }
   },
   "require": {
+    "laravel/helpers": "^1.0",
     "illuminate/support": "5.8.*",
     "jenssegers/date": "^3.0",
     "moontoast/math": "^1.0",
