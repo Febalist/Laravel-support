@@ -153,6 +153,10 @@ class SupportServiceProvider extends ServiceProvider
 
             return preg_match('/^[-+]?\d+[.,]?\d*$/', $value);
         });
+
+        Validator::extend('latin', function ($attribute, $value, $parameters, $validator) {
+            return preg_match('/[a-zA-Z]/u', $value);
+        });
     }
 
     protected function bootJavascript()
