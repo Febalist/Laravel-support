@@ -3,7 +3,7 @@
 <a class="{{ $class ?? 'text-danger' }}"
    href="{{ $_url }}"
    onclick="event.preventDefault(); if(confirm(this.innerText + '?')) document.getElementById('{{ $_id }}').submit()"
->{{ $slot }}</a>
+>{{ $slot ?? __('Delete') }}</a>
 <form id="{{ $_id }}" class="d-none" method="POST"
       action="{{ $_url }}">
   @method('DELETE')
