@@ -54,22 +54,46 @@ namespace Illuminate\Support {
 
     class Collection
     {
-        public function append($source)
+        /**
+         * Append items onto the end of the collection.
+         *
+         * @param iterable $items
+         * @return $this
+         */
+        public function append($items)
         {
             return $this;
         }
 
+        /**
+         * Get new collection without the given values.
+         *
+         * @param iterable $values
+         * @return static
+         */
         public function without($values)
         {
-            return $this;
+            return new Collection();
         }
 
+        /**
+         * Remove elements with given values from collection.
+         *
+         * @param iterable $values
+         * @return $this
+         */
         public function remove($values)
         {
             return $this;
         }
-        
-        public function replace($values)
+
+        /**
+         * Remove all items from collection and append specified items.
+         *
+         * @param iterable $items
+         * @return $this
+         */
+        public function replace($items)
         {
             return $this;
         }

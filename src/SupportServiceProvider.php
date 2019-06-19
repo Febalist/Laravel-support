@@ -4,7 +4,6 @@ namespace Febalist\Laravel\Support;
 
 use Blade;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
 use Validator;
@@ -90,60 +89,7 @@ class SupportServiceProvider extends ServiceProvider
 
     protected function bootCollections()
     {
-        if (!Collection::hasMacro('append')) {
-            Collection::macro('append', function ($source) {
-                foreach ($source as $item) {
-                    $this->push($item);
-                }
-
-                return $this;
-            });
-        }
-
-        if (!Collection::hasMacro('without')) {
-            Collection::macro('without', function ($values) {
-                if ($values instanceof Collection) {
-                    $values = $values->all();
-                } elseif (!is_array($values)) {
-                    $values = func_get_args();
-                }
-
-                $items = array_without($this->all(), $values);
-
-                return collect($items);
-            });
-        }
-
-        if (!Collection::hasMacro('remove')) {
-            Collection::macro('remove', function ($values) {
-                if ($values instanceof Collection) {
-                    $values = $values->all();
-                } elseif (!is_array($values)) {
-                    $values = func_get_args();
-                }
-
-                $collection = collect($this->all())->without($values);
-
-                $this->replace($collection);
-
-                return $this;
-            });
-        }
-
-        if (!Collection::hasMacro('replace')) {
-            Collection::macro('replace', function ($values) {
-                if ($values instanceof Collection) {
-                    $values = $values->all();
-                } elseif (!is_array($values)) {
-                    $values = func_get_args();
-                }
-
-                $this->splice(0);
-                $this->append($values);
-
-                return $this;
-            });
-        }
+        CollectionMacro::boot();
     }
 
     protected function bootValidator()
