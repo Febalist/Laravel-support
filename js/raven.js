@@ -13,5 +13,5 @@ if (app.sentry) {
 }
 
 window.ravenCatch = function(error) {
-  Raven.captureMessage(`Unhandled promise rejection: ${error}`);
+  raven.captureMessage(`Unhandled promise rejection: ${error}`);
 }
