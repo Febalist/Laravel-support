@@ -1,4 +1,5 @@
 window.raven = require('raven-js');
+window.Raven = raven;
 
 if (app.sentry) {
   raven.config(app.sentry.dsn, {
