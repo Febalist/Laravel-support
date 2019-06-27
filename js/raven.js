@@ -10,3 +10,7 @@ if (app.sentry) {
   raven.setTagsContext(app.sentry.context.tags);
   raven.setUserContext(app.sentry.context.user);
 }
+
+window.ravenCatch = function(error) {
+  Raven.captureMessage(`Unhandled promise rejection: ${error}`);
+}
