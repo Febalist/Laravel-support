@@ -2,6 +2,7 @@
 
 namespace Febalist\Laravel\Support;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use ReflectionClass;
@@ -45,7 +46,13 @@ class Macro
         $cascade = $cascade === null ? !$nullable : $cascade;
         $onDelete = $cascade ? 'CASCADE' : ($nullable ? 'SET NULL' : 'NO ACTION');
 
-        $fluent = $this->blueprint->unsignedInteger($reference['column'])->index();
+        $type = DB::getSchemaBuilder()->getColumnType($reference['table'], $reference['key']);
+        $type = $type == 'bigint' ? 'bigInteger' : 'integer';
+
+        $fluent = $this->blueprint->addColumn($type, $reference['column'], [
+            'autoIncrement' => false,
+            'unsigned' => true,
+        ])->index();
         if ($nullable) {
             $fluent->nullable();
         }
