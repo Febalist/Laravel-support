@@ -943,6 +943,7 @@ if (!function_exists('array_combine_values')) {
 }
 
 if (!function_exists('select_options')) {
+    /** @deprecated */
     function select_options($options, $empty = false, $empty_text = '')
     {
         $options = array_value($options);
