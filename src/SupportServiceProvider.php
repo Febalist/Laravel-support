@@ -38,7 +38,6 @@ class SupportServiceProvider extends ServiceProvider
         Macro::register();
 
         $this->mergeConfigFrom(__DIR__.'/../config/javascript.php', 'javascript');
-        $this->mergeConfigFrom(__DIR__.'/../config/version.php', 'version');
         $this->mergeConfigFrom(__DIR__.'/../config/sentry.php', 'sentry');
 
         require_once __DIR__.'/helpers.php';
@@ -110,7 +109,7 @@ class SupportServiceProvider extends ServiceProvider
         javascript([
             'env' => config('app.env'),
             'debug' => config('app.debug'),
-            'version' => config('version.number'),
+            'version' => config('sentry.release'),
         ]);
     }
 }
