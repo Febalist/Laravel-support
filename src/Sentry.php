@@ -5,13 +5,13 @@ namespace Febalist\Laravel\Support;
 use Auth;
 use Exception;
 use Illuminate\Http\Request;
-use Raven_Client;
+use Sentry\State\Scope;
 
 class Sentry
 {
     /** @var static */
     protected static $instance;
-    /** @var Raven_Client */
+    /** @var \Sentry */
     protected $client;
     protected $app_tags_callback;
     protected $app_user_callback;
@@ -65,8 +65,6 @@ class Sentry
     public function boot()
     {
         if ($this->client) {
-            $this->client->setRelease(config('app.version'));
-
             $this->add_tags([
                 'name' => config('app.name'),
                 'host' => str_after(config('app.url'), '://'),
@@ -118,12 +116,18 @@ class Sentry
 
     protected function add_tags(array $data)
     {
-        $this->client->tags_context(array_filter($data));
+        $this->client->configureScope(function (Scope $scope) use ($data) {
+            foreach (array_filter($data) as $key => $value) {
+                $scope->setTag($key, $value);
+            }
+        });
     }
 
     protected function add_user(array $data)
     {
-        $this->client->user_context(array_filter($data));
+        $this->client->configureScope(function (Scope $scope) use ($data) {
+            $scope->setUser(array_filter($data));
+        });
     }
 
     protected function public_dsn()

@@ -4,11 +4,10 @@ return [
     'dsn' => env('SENTRY_DSN'),
 
     // capture release as git sha
-    'release' => null,
+    'release' => @file_get_contents(base_path('VERSION')) ?: '0.0.0',
 
-    // Capture bindings on SQL queries
-    'breadcrumbs.sql_bindings' => true,
-
-    // Capture default user context
-    'user_context' => false,
+    'breadcrumbs' => [
+        // Capture bindings on SQL queries logged in breadcrumbs
+        'sql_bindings' => true,
+    ],
 ];

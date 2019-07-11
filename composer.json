@@ -13,7 +13,7 @@
     "sebastiaanluca/laravel-helpers": "^1.0",
     "symfony/lock": "^4.0",
     "laracasts/utilities": "^3.0",
-    "sentry/sentry-laravel": "0.*",
+    "sentry/sentry-laravel": "^1.1",
     "litipk/php-bignumbers": "^0.8"
   },
   "extra": {
