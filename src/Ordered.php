@@ -44,7 +44,7 @@ trait Ordered
                 $relation_table,
                 $relation->getQualifiedOwnerKeyName(),
                 '=',
-                $relation->getQualifiedForeignKey()
+                $relation->getQualifiedForeignKeyName()
             );
         } elseif ($relation instanceof HasOne) {
             $relation_table = $relation->getRelated()->getTable();
