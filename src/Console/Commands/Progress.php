@@ -5,7 +5,11 @@ namespace Febalist\Laravel\Support\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
-/** @mixin Command */
+/**
+ * @mixin Command
+ * @deprecated
+ * @see https://github.com/febalist/laravel-progress
+ */
 trait Progress
 {
     protected $progressBar;
