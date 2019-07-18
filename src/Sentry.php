@@ -11,6 +11,8 @@ class Sentry
 {
     /** @var static */
     protected static $instance;
+    protected static $tags = [];
+    protected static $user = [];
     /** @var \Sentry */
     protected $client;
     protected $app_tags_callback;
@@ -103,7 +105,10 @@ class Sentry
             if ($dsn = $this->public_dsn()) {
                 javascript('sentry', [
                     'dsn' => $dsn,
-                    'context' => $this->client->context,
+                    'context' => [
+                        'tags' => static::$tags,
+                        'user' => static::$user,
+                    ],
                 ]);
             }
         }
@@ -116,6 +121,8 @@ class Sentry
 
     protected function add_tags(array $data)
     {
+        static::$tags = array_merge(static::$tags, $data);
+
         $this->client->configureScope(function (Scope $scope) use ($data) {
             foreach (array_filter($data) as $key => $value) {
                 $scope->setTag($key, $value);
@@ -125,6 +132,8 @@ class Sentry
 
     protected function add_user(array $data)
     {
+        static::$user = array_merge(static::$user, $data);
+
         $this->client->configureScope(function (Scope $scope) use ($data) {
             $scope->setUser(array_filter($data));
         });
