@@ -22,7 +22,7 @@ composer require febalist/laravel-support
 ## Sentry
 
 ```bash
-npm install --save-dev raven-js@^3.27
+npm install --save-dev raven-js@^3.27 wolfy87-eventemitter
 ```
 
 `app/Providers/AppServiceProvider.php`
@@ -66,10 +66,14 @@ use Febalist\Laravel\Support\Sentry;
 ```
 
 ```javascript
+import Broadcasting from './../../vendor/febalist/laravel-support/js/broadcasting'
+
 window.Vue = require('vue');
 require('./../../vendor/febalist/laravel-support/js/raven');
 
 raven.context(function() {
+  // ...
+  window.broadcasting = new Broadcasting(app.broadcasting);
   // ...
 });
 ```
