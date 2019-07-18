@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Cache\LockTimeoutException;
+
 require 'xml.php';
 
 if (!function_exists('user')) {
@@ -750,53 +752,37 @@ if (!function_exists('binary2string')) {
 
 if (!function_exists('lock')) {
     /**
-     * @return Symfony\Component\Lock\Lock
-     * @deprecated
-     * @see https://symfony.com/doc/current/components/lock.html
+     * Get a lock instance.
+     * @see https://laravel.com/docs/cache#atomic-locks
+     *
+     * @param string $name
+     * @param int    $seconds
+     * @return Illuminate\Contracts\Cache\Lock
      */
-    function lock($name, $ttl = 300.0, $autoRelease = true)
+    function lock($name, $seconds = 0)
     {
-        static $factory = null;
-
-        if (!$factory) {
-            $store = new \Symfony\Component\Lock\Store\FlockStore(sys_get_temp_dir());
-            $factory = $factory ?? new \Symfony\Component\Lock\Factory($store);
-        }
-
-        $resource = serialize_hash(base_path(), $name);
-
-        return $factory->createLock($resource);
+        return Cache::lock($name, $seconds);
     }
 }
 
 if (!function_exists('sync')) {
-    /** @deprecated */
-    function sync($name, callable $callback, $ttl = 300.0, $autoRelease = true)
+    function sync($name, callable $callback, $seconds = 0, $timeout = 0, callable $timeoutCallback = null)
     {
-        static $locks = [];
+        $lock = lock($name, $seconds);
 
-        $lock = lock($name, $ttl, $autoRelease);
-
-        if (isset($locks[$name]) && !$lock->acquire()) {
-            unset($locks[$name]);
-            $lock->release();
-            throw new Exception('Already locked');
+        if ($timeout) {
+            try {
+                $lock->block($timeout, $callback);
+            } catch (LockTimeoutException $exception) {
+                if ($timeoutCallback) {
+                    $timeoutCallback();
+                } else {
+                    throw $exception;
+                }
+            }
+        } else {
+            $lock->get($callback);
         }
-
-        $lock->acquire(true);
-        $locks[$name] = 1;
-
-        try {
-            $result = $callback($lock);
-            unset($locks[$name]);
-            $lock->release();
-        } catch (Exception $exception) {
-            unset($locks[$name]);
-            $lock->release();
-            throw $exception;
-        }
-
-        return $result;
     }
 }
 
