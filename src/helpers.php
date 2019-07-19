@@ -759,9 +759,9 @@ if (!function_exists('lock')) {
      * @param int    $seconds
      * @return Illuminate\Contracts\Cache\Lock
      */
-    function lock($name, $seconds = 0)
+    function lock($name, $seconds = 0, $owner = null)
     {
-        return Cache::lock($name, $seconds);
+        return Cache::lock($name, $seconds, $owner);
     }
 }
 
