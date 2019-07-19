@@ -766,22 +766,18 @@ if (!function_exists('lock')) {
 }
 
 if (!function_exists('sync')) {
-    function sync($name, callable $callback, $seconds = 0, $timeout = 0, callable $timeoutCallback = null)
+    function sync($name, callable $callback, $seconds = 0, $timeout = 3600, callable $timeoutCallback = null)
     {
         $lock = lock($name, $seconds);
 
-        if ($timeout) {
-            try {
-                $lock->block($timeout, $callback);
-            } catch (LockTimeoutException $exception) {
-                if ($timeoutCallback) {
-                    $timeoutCallback();
-                } else {
-                    throw $exception;
-                }
+        try {
+            $lock->block($timeout, $callback);
+        } catch (LockTimeoutException $exception) {
+            if ($timeoutCallback) {
+                $timeoutCallback();
+            } else {
+                throw $exception;
             }
-        } else {
-            $lock->get($callback);
         }
     }
 }
