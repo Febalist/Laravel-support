@@ -766,7 +766,7 @@ if (!function_exists('lock')) {
 }
 
 if (!function_exists('sync')) {
-    function sync($name, callable $callback, $seconds = 0, $timeout = 3600, callable $timeoutCallback = null)
+    function sync($name, callable $callback, $seconds = 300, $timeout = 3600, callable $timeoutCallback = null)
     {
         $lock = lock($name, $seconds);
 
