@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 /**
  * @mixin Command
  * @deprecated
- * @see https://github.com/febalist/laravel-progress
+ * @see https://packagist.org/packages/febalist/laravel-progress
  */
 trait Progress
 {
