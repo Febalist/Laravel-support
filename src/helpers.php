@@ -482,7 +482,11 @@ if (!function_exists('paginate')) {
 }
 
 if (!function_exists('carbon')) {
-    /** @return \Carbon\Carbon */
+    /**
+     * @return \Carbon\Carbon
+     * @deprecated
+     * @see https://packagist.org/packages/febalist/laravel-date
+     */
     function carbon($date = null)
     {
         if (is_numeric($date)) {
