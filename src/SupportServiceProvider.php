@@ -37,7 +37,6 @@ class SupportServiceProvider extends ServiceProvider
     {
         Macro::register();
 
-        $this->mergeConfigFrom(__DIR__.'/../config/javascript.php', 'javascript');
         $this->mergeConfigFrom(__DIR__.'/../config/sentry.php', 'sentry');
 
         require_once __DIR__.'/helpers.php';
