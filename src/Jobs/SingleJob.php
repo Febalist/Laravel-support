@@ -2,7 +2,10 @@
 
 namespace Febalist\Laravel\Support\Jobs;
 
-/** @deprecated */
+/**
+ * @deprecated
+ * @see https://packagist.org/packages/febalist/laravel-single
+ */
 trait SingleJob
 {
     public static function dispatchSingle(...$arguments)

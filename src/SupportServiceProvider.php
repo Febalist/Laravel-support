@@ -59,6 +59,7 @@ class SupportServiceProvider extends ServiceProvider
 
     protected function bootQueue()
     {
+        /** @deprecated */
         Queue::before(function (JobProcessing $event) {
             $class = $event->job->resolveName();
 
