@@ -14,7 +14,7 @@
     "symfony/lock": "^4.0",
     "sentry/sentry-laravel": "^1.1",
     "litipk/php-bignumbers": "^0.8",
-    "febalist/laravel-javascript": "^1.0"
+    "febalist/laravel-javascript": "^1.0|dev-master"
   },
   "extra": {
     "laravel": {
