@@ -25,6 +25,7 @@ class SupportServiceProvider extends ServiceProvider
         $this->bootBlade();
         $this->bootQueue();
 
+        /** @deprecated */
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'support');
     }
 
@@ -57,9 +58,9 @@ class SupportServiceProvider extends ServiceProvider
         });
     }
 
+    /** @deprecated */
     protected function bootQueue()
     {
-        /** @deprecated */
         Queue::before(function (JobProcessing $event) {
             $class = $event->job->resolveName();
 
