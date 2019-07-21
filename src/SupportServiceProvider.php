@@ -17,7 +17,6 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->bootJavascript();
         $this->bootSentry();
         $this->bootCarbon();
         $this->bootValidator();
@@ -104,14 +103,5 @@ class SupportServiceProvider extends ServiceProvider
         Validator::extend('latin', function ($attribute, $value, $parameters, $validator) {
             return preg_match('/[a-zA-Z]/u', $value);
         });
-    }
-
-    protected function bootJavascript()
-    {
-        javascript([
-            'env' => config('app.env'),
-            'debug' => config('app.debug'),
-            'version' => config('sentry.release'),
-        ]);
     }
 }

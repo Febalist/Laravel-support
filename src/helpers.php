@@ -1006,17 +1006,6 @@ if (!function_exists('route_signed')) {
     }
 }
 
-if (!function_exists('javascript')) {
-    function javascript($var, $val = null)
-    {
-        if (!is_array($var)) {
-            $var = [$var => $val];
-        }
-
-        JavaScript::put($var);
-    }
-}
-
 if (!function_exists('model_key')) {
     function model_key($model)
     {
