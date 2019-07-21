@@ -5,6 +5,10 @@ namespace Febalist\Laravel\Support\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 
+/**
+ * @deprecated
+ * @see https://packagist.org/packages/febalist/laravel-mail
+ */
 class MarkdownEmail extends Mailable
 {
     use Queueable;
