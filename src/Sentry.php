@@ -7,6 +7,10 @@ use Exception;
 use Illuminate\Http\Request;
 use Sentry\State\Scope;
 
+/**
+ * @deprecated
+ * @see https://packagist.org/packages/febalist/laravel-sentry
+ */
 class Sentry
 {
     /** @var static */
