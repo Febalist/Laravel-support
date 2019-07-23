@@ -599,7 +599,7 @@ if (!function_exists('filesize_parse')) {
 if (!function_exists('name_initials')) {
     function name_initials($fullname, $separator = null, $short = false)
     {
-        $fullname = whitespaces($fullname);
+        $fullname = trim(whitespaces($fullname));
         $separator = $separator ?? uchr(160);
         $parts = explode(' ', $fullname);
         $result = [];
@@ -608,10 +608,10 @@ if (!function_exists('name_initials')) {
             $result[] = mb_substr($part, 0, 1).'.'.($short ? '' : ' ');
         }
         $result = implode(' ', $result);
-        $result = whitespaces(trim($result));
+        $result = trim(whitespaces($result));
         $result = str_replace(' ', $separator, $result);
 
-        return trim($result);
+        return $result;
     }
 }
 
