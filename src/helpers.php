@@ -765,14 +765,14 @@ if (!function_exists('lock')) {
      * @param int    $seconds
      * @return Illuminate\Contracts\Cache\Lock
      */
-    function lock($name, $seconds = 0, $owner = null)
+    function lock($name, $seconds = 900, $owner = null)
     {
         return Cache::lock($name, $seconds, $owner);
     }
 }
 
 if (!function_exists('sync')) {
-    function sync($name, callable $callback, $seconds = 300, $timeout = 3600, callable $timeoutCallback = null)
+    function sync($name, callable $callback, $seconds = 900, $timeout = 900, callable $timeoutCallback = null)
     {
         $lock = lock($name, $seconds);
 
