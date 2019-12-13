@@ -4,16 +4,6 @@ use Illuminate\Contracts\Cache\LockTimeoutException;
 
 require 'xml.php';
 
-if (!function_exists('user')) {
-    /**
-     * @return App\User
-     */
-    function user($guard = null)
-    {
-        return auth($guard)->user();
-    }
-}
-
 if (!function_exists('json_parse')) {
     /** @return array */
     function json_parse($data = null, $default = null, $asObject = false)

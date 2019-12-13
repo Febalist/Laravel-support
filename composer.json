@@ -19,8 +19,6 @@
     "laravel": {
       "providers": [
         "Febalist\\Laravel\\Support\\SupportServiceProvider",
-        "SebastiaanLuca\\Helpers\\Methods\\GlobalHelpersServiceProvider",
-        "SebastiaanLuca\\Helpers\\Collections\\CollectionMacrosServiceProvider"
       ]
     }
   }
