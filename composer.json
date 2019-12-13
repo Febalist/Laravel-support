@@ -7,10 +7,10 @@
   },
   "require": {
     "laravel/helpers": "^1.0",
-    "illuminate/support": "^5.8|^6.0",
+    "illuminate/support": "^6.0",
     "jenssegers/date": "^3.0",
     "moontoast/math": "^1.0",
-    "sebastiaanluca/laravel-helpers": "^1.0",
+    "sebastiaanluca/laravel-helpers": "^4.0",
     "symfony/lock": "^4.0",
     "litipk/php-bignumbers": "^0.8",
     "febalist/laravel-javascript": "^1.0|dev-master"
