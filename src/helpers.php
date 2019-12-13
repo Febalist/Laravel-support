@@ -64,20 +64,6 @@ if (!function_exists('chance')) {
     }
 }
 
-if (!function_exists('upload_limit')) {
-    /** @deprecated */
-    function upload_limit($mb = false)
-    {
-        $size = min([
-            filesize_parse(ini_get('upload_max_filesize')),
-            filesize_parse(ini_get('post_max_size')),
-            filesize_parse(ini_get('memory_limit')),
-        ]);
-
-        return $mb ? floor($size / 1024 / 1024) : $size;
-    }
-}
-
 if (!function_exists('replace_newlines')) {
     function replace_newlines($string, $symbol = "\n")
     {
@@ -481,34 +467,6 @@ if (!function_exists('paginate')) {
     }
 }
 
-if (!function_exists('carbon')) {
-    /**
-     * @return \Carbon\Carbon
-     * @deprecated
-     * @see https://packagist.org/packages/febalist/laravel-date
-     */
-    function carbon($date = null)
-    {
-        if (is_numeric($date)) {
-            return \Date::createFromTimestamp($date);
-        }
-
-        return \Date::parse($date);
-    }
-}
-
-if (!function_exists('cache_remember')) {
-    /** @deprecated */
-    function cache_remember($key, $minutes, $callback, array $arguments = [], $driver = null)
-    {
-        $hash = array_hash($arguments);
-
-        return Cache::driver($driver)->remember("$key.$hash", $minutes, function () use ($callback, $arguments) {
-            return call_user_func_array($callback, $arguments);
-        });
-    }
-}
-
 if (!function_exists('number')) {
     function number($number, $decimals = 0, $units = null, $separator = null, $plus = false)
     {
@@ -542,57 +500,6 @@ if (!function_exists('number')) {
         }
 
         return $result;
-    }
-}
-
-if (!function_exists('filesize_units')) {
-    /** @deprecated */
-    function filesize_units($locale = null)
-    {
-        return array_get([
-            'en' => ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            'ru' => ['Б', 'КБ', 'МБ', 'ГБ', 'ТБ', 'ПБ', 'ЭБ', 'ЗБ', 'ИБ'],
-        ], $locale, []);
-    }
-}
-
-if (!function_exists('filesize_format')) {
-    /** @deprecated */
-    function filesize_format($size, $locale = 'en')
-    {
-        $units = filesize_units($locale);
-        $power = $size > 0 ? floor(log($size, 1024)) : 0;
-        $number = $size / pow(1024, $power);
-
-        return number($number, 1, $units[$power]);
-    }
-}
-
-if (!function_exists('filesize_parse')) {
-    /** @deprecated */
-    function filesize_parse($string, $locale = 'en')
-    {
-        $units = filesize_units($locale);
-        $byte = $units[0];
-
-        preg_match('/^([\d,\.]+)\s*(.*)$/u', $string, $matches);
-
-        if (!$matches) {
-            return;
-        }
-
-        $number = float($matches[1]);
-        $unit = strtoupper($matches[2] ?: $byte);
-
-        if (!ends_with($unit, $byte)) {
-            $unit = "$unit$byte";
-        }
-
-        foreach ($units as $pow => $name) {
-            if ($unit == $name) {
-                return $number * pow(1024, $pow);
-            }
-        }
     }
 }
 
@@ -655,22 +562,6 @@ if (!function_exists('str_limit_hard')) {
         }
 
         return str_limit($value, $limit, $end);
-    }
-}
-
-if (!function_exists('language')) {
-    /** @deprecated */
-    function language($locale = null)
-    {
-        $locales = [
-            'en' => 'en_US',
-            'ru' => 'ru_RU',
-        ];
-
-        $locale = $locale ?: config('app.locale');
-        $default = config('app.fallback_locale');
-
-        return array_get($locales, $locale) ?: array_get($locales, $default);
     }
 }
 
@@ -930,24 +821,6 @@ if (!function_exists('array_combine_values')) {
     }
 }
 
-if (!function_exists('select_options')) {
-    /** @deprecated */
-    function select_options($options, $empty = false, $empty_text = '')
-    {
-        $options = array_value($options);
-
-        if (!is_assoc($options)) {
-            $options = array_combine_values($options);
-        }
-
-        if ($empty) {
-            $options = ['' => $empty_text] + $options;
-        }
-
-        return $options;
-    }
-}
-
 if (!function_exists('array_init')) {
     function array_init(array &$array, $key, $value = null)
     {
@@ -971,33 +844,6 @@ if (!function_exists('array_wrap_flatten')) {
     function array_wrap_flatten($value)
     {
         return array_wrap(is_array($value) ? array_flatten($value) : $value);
-    }
-}
-
-if (!function_exists('model_route')) {
-    /** @deprecated */
-    function model_route($model, $action = null, $parameters = [], $absolute = true)
-    {
-        $prefix = snake_case(str_plural(class_basename($model)));
-
-        if ($model instanceof \Illuminate\Database\Eloquent\Model) {
-            array_unshift($parameters, $model);
-            $action = $action ?: 'show';
-        } else {
-            $action = $action ?: 'index';
-        }
-
-        return route("$prefix.$action", $parameters, $absolute);
-    }
-}
-
-if (!function_exists('model_view')) {
-    /** @deprecated */
-    function model_view($model, $action, $data = [], $mergeData = [])
-    {
-        $prefix = snake_case(str_plural(class_basename($model)));
-
-        return view("$prefix.$action", $data, $mergeData);
     }
 }
 

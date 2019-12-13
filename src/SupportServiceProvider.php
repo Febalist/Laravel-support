@@ -23,9 +23,6 @@ class SupportServiceProvider extends ServiceProvider
         $this->bootCollections();
         $this->bootBlade();
         $this->bootQueue();
-
-        /** @deprecated */
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'support');
     }
 
     /**
@@ -53,26 +50,6 @@ class SupportServiceProvider extends ServiceProvider
 
         Blade::if('debug', function () {
             return config('app.debug');
-        });
-    }
-
-    /** @deprecated */
-    protected function bootQueue()
-    {
-        Queue::before(function (JobProcessing $event) {
-            $class = $event->job->resolveName();
-
-            $this->app->bindMethod("$class@handle", function ($job, $app) {
-                if (method_exists($job, 'beforeHandle')) {
-                    $job->beforeHandle();
-                }
-
-                $job->handle();
-
-                if (method_exists($job, 'afterHandle')) {
-                    $job->afterHandle();
-                }
-            });
         });
     }
 
