@@ -17,12 +17,10 @@ class SupportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->bootSentry();
         $this->bootCarbon();
         $this->bootValidator();
         $this->bootCollections();
         $this->bootBlade();
-        $this->bootQueue();
     }
 
     /**
@@ -33,8 +31,6 @@ class SupportServiceProvider extends ServiceProvider
     public function register()
     {
         Macro::register();
-
-        $this->mergeConfigFrom(__DIR__.'/../config/sentry.php', 'sentry');
 
         require_once __DIR__.'/helpers.php';
     }
@@ -51,11 +47,6 @@ class SupportServiceProvider extends ServiceProvider
         Blade::if('debug', function () {
             return config('app.debug');
         });
-    }
-
-    protected function bootSentry()
-    {
-        Sentry::instance()->boot();
     }
 
     protected function bootCarbon()
