@@ -18,7 +18,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Febalist\\Laravel\\Support\\SupportServiceProvider",
+        "Febalist\\Laravel\\Support\\SupportServiceProvider"
       ]
     }
   }
