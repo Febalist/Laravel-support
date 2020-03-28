@@ -6,13 +6,13 @@
     }
   },
   "require": {
-    "laravel/helpers": "^1.0",
+    "febalist/laravel-javascript": "^1.0",
     "jenssegers/date": "^3.0",
-    "moontoast/math": "^1.0",
-    "sebastiaanluca/laravel-helpers": "^4.0",
-    "symfony/lock": "^4.0",
+    "laravel/helpers": "^1.0",
     "litipk/php-bignumbers": "^0.8",
-    "febalist/laravel-javascript": "^1.0|dev-master"
+    "moontoast/math": "^1.0",
+    "sebastiaanluca/php-helpers": "^2.0",
+    "symfony/lock": "^4.0"
   },
   "extra": {
     "laravel": {
