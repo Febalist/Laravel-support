@@ -12,7 +12,7 @@
     "sebastiaanluca/laravel-helpers": "^4.0",
     "symfony/lock": "^4.0",
     "litipk/php-bignumbers": "^0.8",
-    "febalist/laravel-javascript": "^1.0|dev-master"
+    "febalist/laravel-javascript": "^1.0"
   },
   "extra": {
     "laravel": {
