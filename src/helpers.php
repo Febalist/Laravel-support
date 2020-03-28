@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Cache\LockTimeoutException;
 
 require 'xml.php';
@@ -867,5 +868,53 @@ if (!function_exists('decimal')) {
     function decimal($value, $scale = null)
     {
         return Litipk\BigNumbers\Decimal::create($value, $scale);
+    }
+}
+
+if (!function_exists('locale')) {
+    /**
+     * Get the active locale.
+     *
+     * @return string
+     */
+    function locale(): string
+    {
+        return config('app.locale') ?? config('app.fallback_locale');
+    }
+}
+
+if (!function_exists('is_guest')) {
+    /**
+     * Determine if the current user is a guest.
+     *
+     * @return bool
+     */
+    function is_guest(): bool
+    {
+        return auth()->guest();
+    }
+}
+
+if (!function_exists('is_logged_in')) {
+    /**
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
+    function is_logged_in(): bool
+    {
+        return auth()->check();
+    }
+}
+
+if (!function_exists('user')) {
+    /**
+     * Get the currently authenticated user.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    function user(): ?Authenticatable
+    {
+        return auth()->user();
     }
 }
