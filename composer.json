@@ -11,7 +11,8 @@
     "laravel/helpers": "^1.0",
     "litipk/php-bignumbers": "^0.8",
     "moontoast/math": "^1.0",
-    "symfony/lock": "^4.0"
+    "symfony/lock": "^4.0",
+    "parsedown/laravel": "^1.2"
   },
   "extra": {
     "laravel": {
