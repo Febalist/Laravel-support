@@ -40,9 +40,9 @@ class SupportServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/../views' => resource_path('views/vendor/support')]);
         $this->loadViewsFrom(__DIR__.'/../views', 'support');
 
-        Blade::component('support::components.alert', 'alert');
-        Blade::component('support::components.group', 'group');
-        Blade::component('support::components.delete', 'delete');
+        Blade::aliasComponent('support::components.alert', 'alert');
+        Blade::aliasComponent('support::components.group', 'group');
+        Blade::aliasComponent('support::components.delete', 'delete');
 
         Blade::if('debug', function () {
             return config('app.debug');
