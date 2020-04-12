@@ -272,7 +272,9 @@ if (!function_exists('url_query')) {
         $url = parse_url($url);
         parse_str($url['query'] ?? '', $query);
         $params = array_merge($query, array_value($params));
-        $url['query'] = http_build_query($params);
+        if ($params) {
+            $url['query'] = http_build_query($params);
+        }
 
         return build_url($url);
     }
