@@ -915,9 +915,9 @@ if (!function_exists('user')) {
     /**
      * Get the currently authenticated user.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|\App\User|null
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    function user()
+    function user(): ?Authenticatable
     {
         return auth()->user();
     }
