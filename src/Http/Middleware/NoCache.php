@@ -19,7 +19,7 @@ class NoCache
         $response = $next($request);
 
         if ($response instanceof Response) {
-            $response->header('Cache-Control', 'no-cache, private, no-store');
+            $response->header('Cache-Control', 'no-store');
         }
 
         return $response;
