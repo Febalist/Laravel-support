@@ -2,7 +2,7 @@
 
 namespace Febalist\Laravel\Support;
 
-class Instance
+trait Instance
 {
     /** @var static */
     protected static $instance;
