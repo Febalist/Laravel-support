@@ -823,7 +823,7 @@ if (!function_exists('array_init')) {
             array_set($array, $key, value($value));
         }
 
-        return $array[$key];
+        return array_get($array, $key);
     }
 }
 
