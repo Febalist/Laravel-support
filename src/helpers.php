@@ -822,6 +822,8 @@ if (!function_exists('array_init')) {
         if (array_get($array, $key) === null) {
             array_set($array, $key, value($value));
         }
+
+        return $array[$key];
     }
 }
 
