@@ -1055,6 +1055,8 @@ if (!function_exists('array_hash')) {
      * @param array $array
      *
      * @return string
+     *
+     * @deprecated
      */
     function array_hash(array $array): string
     {
@@ -1069,6 +1071,8 @@ if (!function_exists('object_hash')) {
      * @param $object
      *
      * @return string
+     *
+     * @deprecated
      */
     function object_hash($object): string
     {
