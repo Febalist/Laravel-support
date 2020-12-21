@@ -1,23 +1,24 @@
 {
-  "name": "febalist/laravel-support",
-  "autoload": {
-    "psr-4": {
-      "Febalist\\Laravel\\Support\\": "src/"
+    "name": "febalist/laravel-support",
+    "autoload": {
+        "psr-4": {
+            "Febalist\\Laravel\\Support\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "require": {
+        "febalist/laravel-javascript": "^2.0",
+        "laravel/helpers": "^1.4",
+        "litipk/php-bignumbers": "^0.8",
+        "parsedown/laravel": "^1.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Febalist\\Laravel\\Support\\SupportServiceProvider"
+            ]
+        }
     }
-  },
-  "require": {
-    "febalist/laravel-javascript": "^1.0",
-    "laravel/helpers": "^1.0",
-    "litipk/php-bignumbers": "^0.8",
-    "moontoast/math": "^1.0",
-    "symfony/lock": "^4.0",
-    "parsedown/laravel": "^1.2"
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Febalist\\Laravel\\Support\\SupportServiceProvider"
-      ]
-    }
-  }
 }

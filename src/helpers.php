@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Cache\LockTimeoutException;
-use SebastiaanLuca\PhpHelpers\Classes\MethodHelper;
-use SebastiaanLuca\PhpHelpers\InternalHelpers;
 
 require 'xml.php';
 
@@ -149,8 +146,8 @@ if (!function_exists('str_uuid')) {
     }
 }
 
-if (!function_exists('list_cleanup')) {
-    function list_cleanup($array, $callback = null, $arguments = [])
+if (!function_exists('array_list')) {
+    function array_list($array, $callback = null, $arguments = [])
     {
         $array = array_value($array);
 
@@ -190,7 +187,7 @@ if (!function_exists('url_decode')) {
     function url_decode($url)
     {
         $before = null;
-        while ($before != $url) {
+        while ($before !== $url) {
             $before = $url;
             $url = urldecode($url);
         }
@@ -213,7 +210,9 @@ if (!function_exists('url_parse')) {
         if (extension_loaded('intl')) {
             $host = idn_to_utf8($host);
         }
+        $host = mb_strtolower($host);
         $scheme = array_get($parts, 'scheme', 'http').'://';
+        $scheme = mb_strtolower($scheme);
         $path = array_get($parts, 'path', '/');
         $query = $withoutQuery ? null : array_get($parts, 'query');
         if ($query) {
@@ -333,19 +332,14 @@ if (!function_exists('img')) {
 if (!function_exists('array_avg')) {
     function array_avg(array $array)
     {
-        $sum = array_sum($array);
-        $count = count($array);
-
-        return div($sum, $count);
+        return div(array_sum($array), count($array));
     }
 }
 
 if (!function_exists('div')) {
-    function div($divisible, $divisor, $number = false)
+    function div($divisible, $divisor, $error = null)
     {
-        $null = $number ? 0 : null;
-
-        return $divisor ? $divisible / $divisor : $null;
+        return $divisor ? $divisible / $divisor : $error;
     }
 }
 
@@ -398,8 +392,8 @@ if (!function_exists('float')) {
     function float($number)
     {
         $number = str_replace(',', '.', $number);
+        $number = preg_replace('/\s/', '', $number);
 
-        //$number = preg_replace('/\s+/', '', $number);
         return (float) $number;
     }
 }
@@ -887,35 +881,11 @@ if (!function_exists('locale')) {
     }
 }
 
-if (!function_exists('is_guest')) {
-    /**
-     * Determine if the current user is a guest.
-     *
-     * @return bool
-     */
-    function is_guest(): bool
-    {
-        return auth()->guest();
-    }
-}
-
-if (!function_exists('is_logged_in')) {
-    /**
-     * Determine if the current user is authenticated.
-     *
-     * @return bool
-     */
-    function is_logged_in(): bool
-    {
-        return auth()->check();
-    }
-}
-
 if (!function_exists('user')) {
     /**
      * Get the currently authenticated user.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|\App\User|null
+     * @return \Illuminate\Contracts\Auth\Authenticatable|\App\User|\App\Models\User|null
      */
     function user()
     {
@@ -931,7 +901,7 @@ if (!function_exists('rand_bool')) {
      */
     function rand_bool(): bool
     {
-        return random_int(0, 1) === 0;
+        return (bool) random_int(0, 1);
     }
 }
 
@@ -967,30 +937,6 @@ if (!function_exists('is_assoc_array')) {
     }
 }
 
-if (!function_exists('array_expand')) {
-    /**
-     * Expand a flat dotted array to a multi-dimensional associative array.
-     *
-     * If a key is encountered that is already present and the existing value is an array, each
-     * new value will be added to that array. If it's not an array, each new value will override
-     * the existing one.
-     *
-     * @param array $array
-     *
-     * @return array
-     */
-    function array_expand(array $array): array
-    {
-        $expanded = [];
-
-        foreach ($array as $key => $value) {
-            InternalHelpers::arraySet($expanded, $key, $value);
-        }
-
-        return $expanded;
-    }
-}
-
 if (!function_exists('array_without')) {
     /**
      * Get the array without the given values.
@@ -1002,7 +948,7 @@ if (!function_exists('array_without')) {
      */
     function array_without(array $array, $values): array
     {
-        $values = !is_array($values) ? [$values] : $values;
+        $values = array_wrap($values);
 
         return array_values(array_diff($array, $values));
     }
@@ -1045,52 +991,5 @@ if (!function_exists('array_pull_value')) {
         $value = array_pull_values($array, [$value]);
 
         return array_shift($value);
-    }
-}
-
-if (!function_exists('array_hash')) {
-    /**
-     * Create a unique identifier for a given array.
-     *
-     * @param array $array
-     *
-     * @return string
-     *
-     * @deprecated
-     */
-    function array_hash(array $array): string
-    {
-        return md5(serialize($array));
-    }
-}
-
-if (!function_exists('object_hash')) {
-    /**
-     * Create a unique identifier for a given object.
-     *
-     * @param $object
-     *
-     * @return string
-     *
-     * @deprecated
-     */
-    function object_hash($object): string
-    {
-        return md5(serialize($object));
-    }
-}
-
-if (!function_exists('has_public_method')) {
-    /**
-     * Check if a class has a certain public method.
-     *
-     * @param object $object
-     * @param string $method
-     *
-     * @return bool
-     */
-    function has_public_method($object, $method): bool
-    {
-        return MethodHelper::hasPublicMethod($object, $method);
     }
 }

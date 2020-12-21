@@ -31,8 +31,6 @@ class SupportServiceProvider extends ServiceProvider
     public function register()
     {
         Macro::register();
-
-        require_once __DIR__.'/helpers.php';
     }
 
     protected function bootBlade()

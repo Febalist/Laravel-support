@@ -2,13 +2,13 @@
 
 namespace Febalist\Laravel\Support;
 
-use Exception;
+use RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
-/** @mixin \Illuminate\Database\Eloquent\Model|\App\Model */
+/** @mixin \Illuminate\Database\Eloquent\Model */
 trait Ordered
 {
     public function scopeOrdered(Builder $builder)
@@ -22,7 +22,7 @@ trait Ordered
             }
 
             if (str_contains($column, '.')) {
-                list($relation, $column) = explode('.', $column);
+                [$relation, $column] = explode('.', $column);
                 $builder->orderByRelation($relation, $column, $direction);
             } else {
                 $builder->orderBy($column, $direction);
@@ -56,7 +56,7 @@ trait Ordered
                 $relation->getQualifiedForeignKeyName()
             );
         } else {
-            throw new Exception('Invalid relation');
+            throw new RuntimeException('Invalid relation');
         }
 
         $table = $builder->getQuery()->from;
