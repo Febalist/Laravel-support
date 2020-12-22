@@ -2,9 +2,9 @@
 
 namespace Illuminate\Database\Schema {
 
-    use Febalist\Laravel\Support\Macro;
+    use Febalist\Laravel\Support\MacroBlueprint;
 
-    /** @mixin Macro */
+    /** @mixin MacroBlueprint */
     class Blueprint
     {
 
@@ -100,3 +100,14 @@ namespace Illuminate\Support {
     }
 }
 
+namespace Illuminate\Contracts\Auth {
+
+    /**
+     * @mixin \App\Models\User
+     * @mixin \App\User
+     */
+    class Authenticatable
+    {
+
+    }
+}
