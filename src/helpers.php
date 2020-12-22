@@ -443,7 +443,8 @@ if (!function_exists('locale')) {
 }
 
 if (!function_exists('user')) {
-    function user(): Authenticatable
+    /** @return Authenticatable|null */
+    function user()
     {
         return auth()->user();
     }
