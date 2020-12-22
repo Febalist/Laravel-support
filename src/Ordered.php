@@ -2,11 +2,11 @@
 
 namespace Febalist\Laravel\Support;
 
-use RuntimeException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use RuntimeException;
 
 /** @mixin \Illuminate\Database\Eloquent\Model */
 trait Ordered

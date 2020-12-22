@@ -3,34 +3,27 @@
 namespace Febalist\Laravel\Support;
 
 use Blade;
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Facades\Queue;
+use Carbon\Carbon;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use ReflectionClass;
+use ReflectionMethod;
 use Validator;
 
 class SupportServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->bootCarbon();
-        $this->bootValidator();
-        $this->bootCollections();
-        $this->bootBlade();
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
     public function register()
     {
-        Macro::register();
+        $this->registerMacro(Blueprint::class, MacroBlueprint::class);
+        $this->registerMacro(Collection::class, MacroCollection::class);
+    }
+
+    public function boot()
+    {
+        $this->bootBlade();
+        $this->bootCarbon();
+        $this->bootValidator();
     }
 
     protected function bootBlade()
@@ -49,12 +42,7 @@ class SupportServiceProvider extends ServiceProvider
 
     protected function bootCarbon()
     {
-        \Carbon\Carbon::useMonthsOverflow(false);
-    }
-
-    protected function bootCollections()
-    {
-        CollectionMacro::boot();
+        Carbon::useMonthsOverflow(false);
     }
 
     protected function bootValidator()
@@ -68,5 +56,23 @@ class SupportServiceProvider extends ServiceProvider
         Validator::extend('latin', function ($attribute, $value, $parameters, $validator) {
             return preg_match('/[a-zA-Z]/u', $value);
         });
+    }
+
+    protected function registerMacro($class, $macro)
+    {
+        $methods = (new ReflectionClass($macro))->getMethods(
+            ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED
+        );
+
+        foreach ($methods as $method) {
+            $method->setAccessible(true);
+            $class::macro($method->name, function (...$args) use ($macro, $method) {
+                if ($method->isStatic()) {
+                    return $macro::{$method->name}(...$args);
+                } else {
+                    return $this->{$method->name}(...$args);
+                }
+            });
+        }
     }
 }
