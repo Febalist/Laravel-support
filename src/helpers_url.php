@@ -57,13 +57,7 @@ if (!function_exists('url_normalize')) {
 if (!function_exists('url_domain')) {
     function url_domain($url)
     {
-        if (Str::contains($url, '/')) {
-            $url = parse_url($url);
-
-            return $url['host'] ?? '';
-        }
-
-        return $url;
+        return parse_url($url, PHP_URL_HOST) ?? $url;
     }
 }
 
