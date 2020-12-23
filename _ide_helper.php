@@ -1,16 +1,5 @@
 <?php
 
-namespace Illuminate\Database\Schema {
-
-    use Febalist\Laravel\Support\MacroBlueprint;
-
-    /** @mixin MacroBlueprint */
-    class Blueprint
-    {
-
-    }
-}
-
 namespace Illuminate\Database\Eloquent {
 
     use Illuminate\Support\HigherOrderCollectionProxy as Proxy;
@@ -62,7 +51,6 @@ namespace Illuminate\Support {
          */
         public function append($items)
         {
-            return $this;
         }
 
         /**
@@ -73,7 +61,6 @@ namespace Illuminate\Support {
          */
         public function without($values)
         {
-            return new Collection();
         }
 
         /**
@@ -84,7 +71,6 @@ namespace Illuminate\Support {
          */
         public function remove($values)
         {
-            return $this;
         }
 
         /**
@@ -95,7 +81,6 @@ namespace Illuminate\Support {
          */
         public function replace($items)
         {
-            return $this;
         }
     }
 }
