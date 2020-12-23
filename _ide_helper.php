@@ -106,7 +106,7 @@ namespace Illuminate\Contracts\Auth {
      * @mixin \App\Models\User
      * @mixin \App\User
      */
-    class Authenticatable
+    interface Authenticatable
     {
 
     }
