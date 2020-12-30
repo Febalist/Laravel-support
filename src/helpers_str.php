@@ -2,50 +2,32 @@
 
 use Illuminate\Support\Str;
 
-/** @see vendor/laravel/helpers/src/helpers.php */
-
 if (!function_exists('str_between')) {
-    function str_between($subject, $after, $before, $reverse = false, $after_last = false, $before_last = false)
+    function str_between($subject, $from, $to)
     {
-        if ($reverse) {
-            if ($before_last) {
-                $subject = str_before_last($subject, $before);
-            } else {
-                $subject = str_before($subject, $before);
-            }
-            if ($after_last) {
-                $subject = str_after_last($subject, $after);
-            } else {
-                $subject = str_after($subject, $after);
-            }
-        } else {
-            if ($after_last) {
-                $subject = str_after_last($subject, $after);
-            } else {
-                $subject = str_after($subject, $after);
-            }
-            if ($before_last) {
-                $subject = str_before_last($subject, $before);
-            } else {
-                $subject = str_before($subject, $before);
-            }
+        return Str::between($subject, $from, $to);
+    }
+}
+
+if (!function_exists('str_between_first')) {
+    function str_between_first($subject, $from, $to)
+    {
+        if ($from === '' || $to === '') {
+            return $subject;
         }
 
-        return $subject;
+        return Str::before(Str::after($subject, $from), $to);
     }
 }
 
 if (!function_exists('str_between_last')) {
-    function str_between_last($subject, $after, $before)
+    function str_between_last($subject, $from, $to)
     {
-        return str_between($subject, $after, $before, true, true, true);
-    }
-}
+        if ($from === '' || $to === '') {
+            return $subject;
+        }
 
-if (!function_exists('str_between_greedy')) {
-    function str_between_greedy($subject, $after, $before)
-    {
-        return str_between($subject, $after, $before, false, false, true);
+        return Str::afterLast(Str::beforeLast($subject, $to), $from);
     }
 }
 
@@ -66,8 +48,8 @@ if (!function_exists('str_before_last')) {
 if (!function_exists('str_replace_start')) {
     function str_replace_start($search, $replace, $subject)
     {
-        if (starts_with($subject, $search)) {
-            return str_replace_first($search, $replace, $subject);
+        if (Str::startsWith($subject, $search)) {
+            return Str::replaceFirst($search, $replace, $subject);
         }
 
         return $subject;
@@ -77,8 +59,8 @@ if (!function_exists('str_replace_start')) {
 if (!function_exists('str_replace_end')) {
     function str_replace_end($search, $replace, $subject)
     {
-        if (ends_with($subject, $search)) {
-            return str_replace_last($search, $replace, $subject);
+        if (Str::endsWith($subject, $search)) {
+            return Str::replaceLast($search, $replace, $subject);
         }
 
         return $subject;
