@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Str;
+
+/** @see vendor/laravel/helpers/src/helpers.php */
+
 if (!function_exists('str_between')) {
     function str_between($subject, $after, $before, $reverse = false, $after_last = false, $before_last = false)
     {
@@ -48,22 +52,36 @@ if (!function_exists('str_between_greedy')) {
 if (!function_exists('str_after_last')) {
     function str_after_last($subject, $search)
     {
-        if ($search === '') {
-            return $subject;
-        }
-
-        return last(explode($search, $subject));
+        return Str::afterLast($subject, $search);
     }
 }
 
 if (!function_exists('str_before_last')) {
     function str_before_last($subject, $search)
     {
-        if ($search === '') {
-            return $subject;
+        return Str::beforeLast($subject, $search);
+    }
+}
+
+if (!function_exists('str_replace_start')) {
+    function str_replace_start($search, $replace, $subject)
+    {
+        if (starts_with($subject, $search)) {
+            return str_replace_first($search, $replace, $subject);
         }
 
-        return implode($search, array_slice(explode($search, $subject), 0, -1));
+        return $subject;
+    }
+}
+
+if (!function_exists('str_replace_end')) {
+    function str_replace_end($search, $replace, $subject)
+    {
+        if (ends_with($subject, $search)) {
+            return str_replace_last($search, $replace, $subject);
+        }
+
+        return $subject;
     }
 }
 
