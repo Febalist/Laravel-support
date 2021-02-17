@@ -6,7 +6,6 @@
     }
   },
   "require": {
-    "febalist/laravel-javascript": "^1.0",
     "laravel/helpers": "^1.0",
     "litipk/php-bignumbers": "^0.8",
     "moontoast/math": "^1.0",
